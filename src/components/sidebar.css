@@ -1,0 +1,18 @@
+.sidebar-wrapper {
+    display: flex;
+    height: 100vh; /* 100% of the viewport height */
+  }
+  
+  #colorlib-aside {
+    flex: 1; /* Allows the sidebar to expand and fill the container */
+    display: flex;
+    flex-direction: column; /* Aligns children vertically */
+  }
+  
+  .text-center {
+    flex: 1; /* Allows the content to expand */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center the content vertically */
+  }
+  
