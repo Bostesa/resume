@@ -12,7 +12,7 @@ export default class Introduction extends Component {
                           backgroundSize: 'contain',  // Adjust as needed: 'cover' might also be suitable
                           backgroundPosition: 'right',
                           backgroundRepeat: 'no-repeat',
-                          height: '1000px',  // Set the height as needed
+                          height: '700px',  // Set the height as needed
                           width: '100%',    // Ensure the width matches the parent container or as needed
                           listStyleType: 'none', // Optional: Remove the bullet point
                           padding: '10px',  // Optional: Add some padding if content is overlapping with the background
