@@ -32,7 +32,7 @@ export default class Timeline extends Component {
                         <i className="icon-pen2" />
                       </div>
                       <div className="timeline-label">
-                        <h2>YouTube Comments Sentiment Analysis<span>Python, NLP, Machine Learning</span></h2>
+                        <h2>YouTube Comments Sentiment Analysis <span>Python, NLP, Machine Learning</span></h2>
                         <p>Using YouTube Data API for sentiment analysis with TensorFlow and scikit-learn, providing content optimization insights.</p>
                       </div>
                     </div>
