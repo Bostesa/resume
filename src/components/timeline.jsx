@@ -21,8 +21,8 @@ export default class Timeline extends Component {
                         <i className="icon-pen2" />
                       </div>
                       <div className="timeline-label">
-                        <h2>Artificial Intelligence Engineer intern at Radical AI <span>Apr 2024-present</span></h2>
-                        <p>As an Artificial Intelligence Engineer at Radical AI, I am leveraging technologies such as OpenAI and Google Gemini to develop ReX, an AI coach who serves as a steadfast career companion for learners, offering personalized coaching, mentorship, and support throughout the various phases of their career lifecycle. </p>
+                        <h2>OmniSyncAI<span>May 2024-present</span></h2>
+                        <p>●	Currently working developing Account setup for the company. Implementing Business account setup, Ability to invite team member, 2FA verification, AI recommendation for business with Node.js, React, and PostgreSQL. </p>
                       </div>
                     </div>
                   </article>
@@ -43,8 +43,8 @@ export default class Timeline extends Component {
                         <i className="icon-pen2" />
                       </div>
                       <div className="timeline-label">
-                        <h2>YouTube Comments Sentiment Analysis <span>Python, NLP, Machine Learning</span></h2>
-                        <p>Using YouTube Data API for sentiment analysis with TensorFlow and scikit-learn, providing content optimization insights.</p>
+                        <h2>Radical AI <span>Mar 2024 - May 2024/span></h2>
+                        <p>As an Artificial Intelligence Engineer at Radical AI, I am leveraging technologies such as OpenAI and Google Gemini to develop ReX, an AI coach who serves as a steadfast career companion for learners, offering personalized coaching, mentorship, and support throughout the various phases of their career lifecycle. </p>
                       </div>
                     </div>
                   </article>
