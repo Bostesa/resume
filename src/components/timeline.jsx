@@ -22,7 +22,7 @@ export default class Timeline extends Component {
                       </div>
                       <div className="timeline-label">
                         <h2>OmniSyncAI<span>May 2024-present</span></h2>
-                        <p>●	Currently working developing Account setup for the company. Implementing Business account setup, Ability to invite team member, 2FA verification, AI recommendation for business with Node.js, React, and PostgreSQL. </p>
+                        <p>Currently working developing Account setup for the company. Implementing Business account setup, Ability to invite team member, 2FA verification, AI recommendation for business with Node.js, React, and PostgreSQL. </p>
                       </div>
                     </div>
                   </article>
