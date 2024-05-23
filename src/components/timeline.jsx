@@ -43,7 +43,7 @@ export default class Timeline extends Component {
                         <i className="icon-pen2" />
                       </div>
                       <div className="timeline-label">
-                        <h2>Radical AI <span>Mar 2024 - May 2024/span></h2>
+                        <h2>Radical AI <span>Mar 2024 - May 2024</span></h2>
                         <p>As an Artificial Intelligence Engineer at Radical AI, I am leveraging technologies such as OpenAI and Google Gemini to develop ReX, an AI coach who serves as a steadfast career companion for learners, offering personalized coaching, mentorship, and support throughout the various phases of their career lifecycle. </p>
                       </div>
                     </div>
