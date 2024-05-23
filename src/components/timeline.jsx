@@ -21,7 +21,7 @@ export default class Timeline extends Component {
                         <i className="icon-pen2" />
                       </div>
                       <div className="timeline-label">
-                        <h2>OmniSyncAI<span>May 2024-present</span></h2>
+                        <h2>Fullstack Software Engineer intern </h2><h3>OmniSyncAI <span>May 2024-present</span></h3>
                         <p>Currently working developing Account setup for the company. Implementing Business account setup, Ability to invite team member, 2FA verification, AI recommendation for business with Node.js, React, and PostgreSQL. </p>
                       </div>
                     </div>
@@ -32,7 +32,7 @@ export default class Timeline extends Component {
                         <i className="icon-pen2" />
                       </div>
                       <div className="timeline-label">
-                        <h2>Undergrad Researcher at UMBC <span>Sep 2023-present</span></h2>
+                        <h2>Undergrad Researcher </h2><h3></h3>UMBC <span>Sep 2023-present</span></h3>
                         <p>I collaborated with the DAMS research lab on IoT projects specifically the SMART CAMPUS project, developing algorithms for data analysis and designing a cloud-based server infrastructure for enhanced data processing. I also integrated various technologies to improve real-time data communication and predictive analytics for environmental monitoring and occupancy detection..</p>
                       </div>
                     </div>
@@ -43,7 +43,7 @@ export default class Timeline extends Component {
                         <i className="icon-pen2" />
                       </div>
                       <div className="timeline-label">
-                        <h2>Radical AI <span>Mar 2024 - May 2024</span></h2>
+                        <h2>Artifical intellgence Engineer intern </h2><h3>Radical AI <span>Mar 2024 - May 2024</span></h3>
                         <p>As an Artificial Intelligence Engineer at Radical AI, I am leveraging technologies such as OpenAI and Google Gemini to develop ReX, an AI coach who serves as a steadfast career companion for learners, offering personalized coaching, mentorship, and support throughout the various phases of their career lifecycle. </p>
                       </div>
                     </div>
