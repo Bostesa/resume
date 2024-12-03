@@ -13,7 +13,7 @@ export default class About extends Component {
                     <div className="about-desc">
                     <span className="heading-meta">About Me</span>
                     <h2 className="colorlib-heading">Who Am I?</h2>
-                    <p>Hi, I'm Nathan Samson, a computer science student passionate about software. Currently pursuing my Bachelor's degree at the University of Maryland Baltimore County, I feel in love with software due to LLm it was the first time i realized the transfromative impact software can have on human lives.</p>
+                    <p>Hi, I'm Nathan Samson, a computer science student passionate about software. Currently pursuing my Bachelor's degree at the University of Maryland Baltimore County, I feel in love with software due to LLMs it was the first time i realized the transfromative impact software can have on human lives.</p>
                       <p>My software journey is filled with relevant coursework such as Computer Science, Calculus, and Physics, laying a strong foundation for my technical skills. My interest in problem-solving and analytical reasoning has led me to get incolved in software at my school beyond academics, I've been actively involved in IoT research and development, contributing to projects that harness the power of IoT for real-time data analysis and decision-making.</p>
                     </div>
                 </div>
