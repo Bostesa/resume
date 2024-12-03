@@ -65,7 +65,7 @@ export default class About extends Component {
                 </div>
             </div>
           </div>
-           <div className="row">
+           <div className="row d-flex justify-content-center">
               <div className="col-md-4 offset-md-4 text-center animate-box">
                 <div className="services color-2">
                   <span className="icon">
