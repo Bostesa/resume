@@ -66,7 +66,9 @@ export default class About extends Component {
             </div>
           </div>
            <div className="row justify-content-center">
-              <div className="col-md-4 offset-md-4 text-center animate-box">
+              <div className="col-md-4 text-center animate-box"
+                style={{ margin: '0 auto', float: 'none' }}
+              >
                 <div className="services color-2">
                   <span className="icon">
                     <i className="icon-data" />
