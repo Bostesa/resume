@@ -38,7 +38,7 @@ export default class About extends Component {
                 </span>
                 <div className="desc">
                     <h3>AI/ML </h3>
-                    <p>I have experience building AI from my long project for Connect4, employing advanced Reinforcement Learning techniques including Distributional Dueling Networks, Noisy Nets, and Prioritized Experience Replay, all built with PyTorch </p>
+                    <p>I have experience with AI with a expierence in developing and implementing ML algorithms and models utilizing frameworks such as TensorFlow and PyTorch to create systems and AI-driven solutions.</p>
                 </div>
                 </div>
             </div>
@@ -49,7 +49,7 @@ export default class About extends Component {
                 </span>
                 <div className="desc">
                 <h3>Software Development</h3>
-                <p>Strong proficiencies in Python, Java, and web technologies through Expierence </p>
+                <p>I have experience in full-stack software development where i built robust and scalable applications using Node.js, React, and Python. Skilled in designing user interfaces and optimizing system performance to enhance efficiency. </p>
                 </div>
                 </div>
             </div>
@@ -59,8 +59,8 @@ export default class About extends Component {
                     <i className="icon-data" />
                 </span>
                 <div className="desc">
-                <h3>Data Science/Analysis & IoT</h3>
-                    <p>AIn my role at UMBC's DAMS lab, I focus on harnessing data through sophisticated algorithms, facilitating insightful data analysis for IoT applications.</p>
+                <h3>Data Science</h3>
+                    <p>I have expierence in data science specifically real-time data analytics, statistical analysis, and data visualization. Using Python and SQL to extract insights for data-informed decision-making.</p>
                 </div>
                 </div>
             </div>
@@ -71,7 +71,7 @@ export default class About extends Component {
                 </span>
                 <div className="desc">
                     <h3>Internet of Things </h3>
-                    <p>My work extends to the practical applications of IoT, leveraging tools like Jenkins, Kubernetes, and Docker to streamline and enhance device connectivity and communication. </p>
+                    <p>S I have expierence in designing IoT solutions, specifaclly integrating sensors and devices for real-time data collection and analysis. Also with utilizing protocols like MQTT and edge computing to enhance system performance.</p>
                 </div>
                 </div>
             </div>
