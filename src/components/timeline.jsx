@@ -26,6 +26,7 @@ export default class Timeline extends Component {
                           at campus food locations, developed a UI for app use. Optimized data communication with MQTT and 
                           RESTful APIs, managed RDBMS and TSDBMS databases, improved server processing by 25% 
                           through edge, and am currently working on a research paper as a main contributor.</p>
+                       </div>
                     </div>
                   </article>
                   <article className="timeline-entry animate-box" data-animate-effect="fadeInLeft">
