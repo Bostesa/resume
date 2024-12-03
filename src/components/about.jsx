@@ -71,7 +71,7 @@ export default class About extends Component {
                 </span>
                 <div className="desc">
                     <h3>Internet of Things </h3>
-                    <p>S I have expierence in designing IoT solutions, specifaclly integrating sensors and devices for real-time data collection and analysis. Also with utilizing protocols like MQTT and edge computing to enhance system performance.</p>
+                    <p>I have expierence in designing IoT solutions, specifaclly integrating sensors and devices for real-time data collection and analysis. Also with utilizing protocols like MQTT and edge computing to enhance system performance.</p>
                 </div>
                 </div>
             </div>
