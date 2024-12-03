@@ -18,7 +18,7 @@ export default class Sidebar extends Component {
                 <ul>
                   <li className="active"><a href="#home" data-nav-section="home">Introduction</a></li>
                   <li><a href="#about" data-nav-section="about">About</a></li>
-                  <li><a href="#timeline" data-nav-section="timeline">Expierence/Projects</a></li>
+                  <li><a href="#timeline" data-nav-section="timeline">Expierence</a></li>
                 </ul>
               </div>
             </nav>
@@ -30,10 +30,10 @@ export default class Sidebar extends Component {
             </nav>
             <div className="colorlib-footer">
             <p><small>
-      Currently navigating the depths of Computer Science at UMBC, I'm on a constant quest for knowledge and innovation. 
+      Currently Undergrad Researcher at UMBC. 
           </small></p>
           <p><small>
-              Stay tuned for exciting projects and research endeavors that are on the horizon!
+              Look at my Github for exciting projects!
             </small></p>
             </div>
           </aside>
