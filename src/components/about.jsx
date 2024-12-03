@@ -64,8 +64,7 @@ export default class About extends Component {
                 </div>
                 </div>
             </div>
-            <div className="d-flex justify-content-center align-items-center vh-100">
-            <div className="col-md-4 text-center animate-box">
+            <div className="col-md-4 offset-md-4 text-center animate-box">
                 <div className="services color-2">
                 <span className="icon">
                     <i className="icon-data" />
@@ -75,7 +74,6 @@ export default class About extends Component {
                     <p>I have expierence in designing IoT solutions, specifaclly integrating sensors and devices for real-time data collection and analysis. Also with utilizing protocols like MQTT and edge computing to enhance system performance.</p>
                 </div>
                 </div>
-            </div>
             </div>
             {/*
             <div className="col-md-4 text-center animate-box">
