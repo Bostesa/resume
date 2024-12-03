@@ -64,16 +64,23 @@ export default class About extends Component {
                 </div>
                 </div>
             </div>
-            <div className="row"><
+          </div>
+           <div className="row">
               <div className="col-md-4 offset-md-4 text-center animate-box">
                 <div className="services color-2">
-                <span className="icon">
+                  <span className="icon">
                     <i className="icon-data" />
-                </span>
-                <div className="desc">
-                    <h3>Internet of Things </h3>
-                    <p>I have expierence in designing IoT solutions, specifaclly integrating sensors and devices for real-time data collection and analysis. Also with utilizing protocols like MQTT and edge computing to enhance system performance.</p>
-                </div>
+                  </span>
+                  <div className="desc">
+                    <h3>Internet of Things</h3>
+                    <p>
+                      I have experience in designing IoT solutions,
+                      specifically integrating sensors and devices for real-time
+                      data collection and analysis. Also with utilizing
+                      protocols like MQTT and edge computing to enhance system
+                      performance.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
