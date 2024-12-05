@@ -32,9 +32,6 @@ export default class Sidebar extends Component {
             <p><small>
       Currently Undergrad Researcher at UMBC. 
           </small></p>
-          <p><small>
-              Look at my Github for exciting projects!
-            </small></p>
             </div>
           </aside>
         </div>
