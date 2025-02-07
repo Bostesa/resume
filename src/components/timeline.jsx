@@ -21,11 +21,8 @@ export default class Timeline extends Component {
                         <i className="icon-pen2" />
                       </div>
                       <div className="timeline-label">
-                        <h2>Undergrad Researcher </h2><h2>UMBC <span>(Sep 2023-present)</span></h2>
-                        <p>Developed a Smart Campus application using Lidar sensors and ML to predict and display real-time occupancy 
-                          at campus food locations, developed a UI for app use. Optimized data communication with MQTT and 
-                          RESTful APIs, managed RDBMS and TSDBMS databases, improved server processing by 25% 
-                          through edge, and am currently working on a research paper as a main contributor.</p>
+                        <h2>Incoming Software Engineer Intern </h2><h2>Capital One <span>(June 2025 - August 2025)</span></h2>
+                        <p>Summer 2025</p>
                        </div>
                     </div>
                   </article>
@@ -35,8 +32,11 @@ export default class Timeline extends Component {
                         <i className="icon-pen2" />
                       </div>
                       <div className="timeline-label">
-                        <h2>Fullstack Software Engineer intern </h2><h2>OmniSyncAI <span>(May 2024 - July 2024)</span></h2>
-                        <p>Engineered user-friendly CRM account setup using Node.js, React, and PostgreSQL, reducing onboarding time and increasing team invitations through AI-powered recommendations.</p>
+                        <h2>Undergrad Researcher </h2><h2>UMBC <span>(Sep 2023 - present)</span></h2>
+                        <p>Developed a Smart Campus application using Lidar sensors and ML to predict and display real-time occupancy 
+                          at campus food locations, developed a UI for app use. Optimized data communication with MQTT and 
+                          RESTful APIs, managed RDBMS and TSDBMS databases, improved server processing by 25% 
+                          through edge, and am currently working on a research paper as a main contributor.</p>
                       </div>
                     </div>
                   </article>
@@ -46,8 +46,8 @@ export default class Timeline extends Component {
                         <i className="icon-pen2" />
                       </div>
                       <div className="timeline-label">
-                        <h2>Artifical intellgence Engineer intern </h2><h2>Radical AI <span>(Mar 2024 - May 2024)</span></h2>
-                        <p>As an Artificial Intelligence Engineer at Radical AI, I am leveraging technologies such as OpenAI and Google Gemini to develop ReX, an AI coach who serves as a steadfast career companion for learners, offering personalized coaching, mentorship, and support throughout the various phases of their career lifecycle. </p>
+                        <h2>Fullstack Software Engineer intern </h2><h2>OmniSyncAI <span>(May 2024 - July 2024)</span></h2>
+                        <p>Engineered user-friendly CRM account setup using Node.js, React, and PostgreSQL, reducing onboarding time and increasing team invitations through AI-powered recommendations.</p>
                       </div>
                     </div>
                   </article>
