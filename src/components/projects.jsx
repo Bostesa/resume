@@ -50,7 +50,7 @@ export default class Projects extends Component {
                   flex: '1',
                   display: 'flex',
                   flexDirection: 'column',
-                  minHeight: '360px'
+                  minHeight: '260px'
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.borderColor = '#0A0A0A';
@@ -61,18 +61,6 @@ export default class Projects extends Component {
                   e.currentTarget.style.transform = 'translateY(0)';
                 }}
               >
-              <div style={{
-                width: '48px',
-                height: '48px',
-                background: '#0A0A0A',
-                marginBottom: '20px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '24px'
-              }}>
-                💳
-              </div>
               <h3 style={{
                 fontSize: '18px',
                 fontWeight: '600',
@@ -128,7 +116,7 @@ export default class Projects extends Component {
                   flex: '1',
                   display: 'flex',
                   flexDirection: 'column',
-                  minHeight: '360px'
+                  minHeight: '260px'
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.borderColor = '#0A0A0A';
@@ -139,18 +127,6 @@ export default class Projects extends Component {
                   e.currentTarget.style.transform = 'translateY(0)';
                 }}
               >
-              <div style={{
-                width: '48px',
-                height: '48px',
-                background: '#0A0A0A',
-                marginBottom: '20px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '24px'
-              }}>
-                📊
-              </div>
               <h3 style={{
                 fontSize: '18px',
                 fontWeight: '600',
@@ -206,7 +182,7 @@ export default class Projects extends Component {
                   flex: '1',
                   display: 'flex',
                   flexDirection: 'column',
-                  minHeight: '360px'
+                  minHeight: '260px'
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.borderColor = '#0A0A0A';
@@ -217,18 +193,6 @@ export default class Projects extends Component {
                   e.currentTarget.style.transform = 'translateY(0)';
                 }}
               >
-              <div style={{
-                width: '48px',
-                height: '48px',
-                background: '#0A0A0A',
-                marginBottom: '20px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '24px'
-              }}>
-                🛍️
-              </div>
               <h3 style={{
                 fontSize: '18px',
                 fontWeight: '600',
@@ -304,7 +268,7 @@ export default class Projects extends Component {
                   flex: '1',
                   display: 'flex',
                   flexDirection: 'column',
-                  minHeight: '360px'
+                  minHeight: '260px'
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.borderColor = '#0A0A0A';
@@ -315,18 +279,6 @@ export default class Projects extends Component {
                   e.currentTarget.style.transform = 'translateY(0)';
                 }}
               >
-              <div style={{
-                width: '48px',
-                height: '48px',
-                background: '#0A0A0A',
-                marginBottom: '20px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '24px'
-              }}>
-                🔒
-              </div>
               <h3 style={{
                 fontSize: '18px',
                 fontWeight: '600',
@@ -382,7 +334,7 @@ export default class Projects extends Component {
                   flex: '1',
                   display: 'flex',
                   flexDirection: 'column',
-                  minHeight: '360px'
+                  minHeight: '260px'
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.borderColor = '#0A0A0A';
@@ -393,18 +345,6 @@ export default class Projects extends Component {
                   e.currentTarget.style.transform = 'translateY(0)';
                 }}
               >
-              <div style={{
-                width: '48px',
-                height: '48px',
-                background: '#0A0A0A',
-                marginBottom: '20px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '24px'
-              }}>
-                ⚡
-              </div>
               <h3 style={{
                 fontSize: '18px',
                 fontWeight: '600',
