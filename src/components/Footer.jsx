@@ -68,7 +68,7 @@ export default class Footer extends Component {
               color: '#6B6B6B',
               margin: 0
             }}>
-              © {new Date().getFullYear()} Nathan Samson. All rights reserved.
+              © {new Date().getFullYear()} Nathan Samson.
             </p>
 
             {/* Social Links */}
