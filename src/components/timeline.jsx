@@ -3,60 +3,205 @@ import React, { Component } from 'react'
 export default class Timeline extends Component {
   render() {
     return (
-      <div>
-        <section className="colorlib-experience" data-section="timeline">
-          <div className="colorlib-narrow-content">
-            <div className="row">
-              <div className="col-md-6 col-md-offset-3 col-md-pull-3 animate-box" data-animate-effect="fadeInLeft">
-                <span className="heading-meta">Highlights</span>
-                <h2 className="colorlib-heading animate-box">Expierence</h2>
-              </div>
-            </div>
-            <div className="row">
-              <div className="col-md-12">
-                <div className="timeline-centered">
-                   <article className="timeline-entry animate-box" data-animate-effect="fadeInLeft">
-                    <div className="timeline-entry-inner">
-                      <div className="timeline-icon color-2">
-                        <i className="icon-pen2" />
-                      </div>
-                      <div className="timeline-label">
-                        <h2>Software Engineer Intern </h2><h2>Capital One <span>(June 2025 - August 2025)</span></h2>
-                        <p>Business Cards & Payments - Payment Intelligence for Enterprises Team</p>
-                       </div>
-                    </div>
-                  </article>
-                  <article className="timeline-entry animate-box" data-animate-effect="fadeInLeft">
-                    <div className="timeline-entry-inner">
-                      <div className="timeline-icon color-3">
-                        <i className="icon-pen2" />
-                      </div>
-                      <div className="timeline-label">
-                        <h2>Undergrad Researcher </h2><h2>UMBC <span>(Sep 2023 - present)</span></h2>
-                        <p>Developed a Smart Campus application using Lidar sensors and ML to predict and display real-time occupancy 
-                          at campus food locations, developed a UI for app use. Optimized data communication with MQTT and 
-                          RESTful APIs, managed RDBMS and TSDBMS databases, improved server processing by 25% 
-                          through edge, and am currently working on a research paper as a main contributor.</p>
-                      </div>
-                    </div>
-                  </article>
-                  <article className="timeline-entry animate-box" data-animate-effect="fadeInTop">
-                    <div className="timeline-entry-inner">
-                      <div className="timeline-icon color-4">
-                        <i className="icon-pen2" />
-                      </div>
-                      <div className="timeline-label">
-                        <h2>Fullstack Software Engineer intern </h2><h2>OmniSyncAI <span>(May 2024 - July 2024)</span></h2>
-                        <p>Engineered user-friendly CRM account setup using Node.js, React, and PostgreSQL, reducing onboarding time and increasing team invitations through AI-powered recommendations.</p>
-                      </div>
-                    </div>
-                  </article>
+      <section
+        id="experience"
+        style={{
+          minHeight: '100vh',
+          padding: '120px 48px',
+          background: '#FAFAFA'
+        }}
+      >
+        <div style={{
+          maxWidth: '1100px',
+          margin: '0 auto'
+        }}>
+          {/* Section Title */}
+          <h2 style={{
+            fontSize: 'clamp(36px, 5vw, 56px)',
+            fontWeight: '600',
+            color: '#0A0A0A',
+            marginBottom: '64px',
+            letterSpacing: '-1px'
+          }}>
+            Experience
+          </h2>
+
+          {/* Experience Cards */}
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '32px'
+          }}>
+            {/* Capital One */}
+            <div
+              style={{
+                padding: '32px',
+                background: '#FFFFFF',
+                border: '1px solid #E5E5E5',
+                transition: 'border-color 0.2s ease'
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.borderColor = '#0A0A0A'}
+              onMouseLeave={(e) => e.currentTarget.style.borderColor = '#E5E5E5'}
+            >
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'flex-start',
+                marginBottom: '12px',
+                flexWrap: 'wrap',
+                gap: '12px'
+              }}>
+                <div>
+                  <h3 style={{
+                    fontSize: '18px',
+                    fontWeight: '600',
+                    color: '#0A0A0A',
+                    marginBottom: '4px',
+                    letterSpacing: '-0.3px'
+                  }}>
+                    Software Engineer Intern
+                  </h3>
+                  <h4 style={{
+                    fontSize: '15px',
+                    fontWeight: '500',
+                    color: '#6B6B6B',
+                    margin: 0
+                  }}>
+                    Capital One
+                  </h4>
                 </div>
+                <span style={{
+                  fontSize: '13px',
+                  color: '#6B6B6B',
+                  fontWeight: '500'
+                }}>
+                  Jun - Aug 2025
+                </span>
               </div>
+              <p style={{
+                fontSize: '15px',
+                lineHeight: '1.7',
+                color: '#6B6B6B',
+                margin: 0
+              }}>
+                Built serverless monitoring solution with Python, AWS Lambda, and FastAPI. Implemented APM using New Relic.
+              </p>
+            </div>
+
+            {/* UMBC Researcher */}
+            <div
+              style={{
+                padding: '32px',
+                background: '#FFFFFF',
+                border: '1px solid #E5E5E5',
+                transition: 'border-color 0.2s ease'
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.borderColor = '#0A0A0A'}
+              onMouseLeave={(e) => e.currentTarget.style.borderColor = '#E5E5E5'}
+            >
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'flex-start',
+                marginBottom: '12px',
+                flexWrap: 'wrap',
+                gap: '12px'
+              }}>
+                <div>
+                  <h3 style={{
+                    fontSize: '18px',
+                    fontWeight: '600',
+                    color: '#0A0A0A',
+                    marginBottom: '4px',
+                    letterSpacing: '-0.3px'
+                  }}>
+                    Undergraduate Researcher
+                  </h3>
+                  <h4 style={{
+                    fontSize: '15px',
+                    fontWeight: '500',
+                    color: '#6B6B6B',
+                    margin: 0
+                  }}>
+                    UMBC
+                  </h4>
+                </div>
+                <span style={{
+                  fontSize: '13px',
+                  color: '#6B6B6B',
+                  fontWeight: '500'
+                }}>
+                  Sep 2023 - Present
+                </span>
+              </div>
+              <p style={{
+                fontSize: '15px',
+                lineHeight: '1.7',
+                color: '#6B6B6B',
+                margin: 0
+              }}>
+                Co-authoring research on IoT protocols and distributed systems. Modified Eclipse Mosquitto (60K LOC) for GDPR compliance. Built Smart Campus ML prediction system with LiDAR sensors.
+              </p>
+            </div>
+
+            {/* OmniSyncAI */}
+            <div
+              style={{
+                padding: '32px',
+                background: '#FFFFFF',
+                border: '1px solid #E5E5E5',
+                transition: 'border-color 0.2s ease'
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.borderColor = '#0A0A0A'}
+              onMouseLeave={(e) => e.currentTarget.style.borderColor = '#E5E5E5'}
+            >
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'flex-start',
+                marginBottom: '12px',
+                flexWrap: 'wrap',
+                gap: '12px'
+              }}>
+                <div>
+                  <h3 style={{
+                    fontSize: '18px',
+                    fontWeight: '600',
+                    color: '#0A0A0A',
+                    marginBottom: '4px',
+                    letterSpacing: '-0.3px'
+                  }}>
+                    Software Engineer Intern
+                  </h3>
+                  <h4 style={{
+                    fontSize: '15px',
+                    fontWeight: '500',
+                    color: '#6B6B6B',
+                    margin: 0
+                  }}>
+                    OmniSyncAI
+                  </h4>
+                </div>
+                <span style={{
+                  fontSize: '13px',
+                  color: '#6B6B6B',
+                  fontWeight: '500'
+                }}>
+                  May - Jul 2024
+                </span>
+              </div>
+              <p style={{
+                fontSize: '15px',
+                lineHeight: '1.7',
+                color: '#6B6B6B',
+                margin: 0
+              }}>
+                Engineered CRM account setup with Node.js, React, and PostgreSQL. Implemented AI-powered recommendations.
+              </p>
             </div>
           </div>
-        </section>
-      </div>
+        </div>
+      </section>
     )
   }
 }

@@ -1,33 +1,128 @@
-.App {
-  text-align: center;
+/* Global Reset & Minimalist Styles */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-  pointer-events: none;
+html {
+  scroll-behavior: smooth;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: rgb(78, 51, 51);
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: #FFFFFF;
+  color: #0A0A0A;
+  line-height: 1.6;
 }
 
-.App-link {
-  color: #61dafb;
+/* Remove default link styles */
+a {
+  text-decoration: none;
+  color: inherit;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+/* Smooth scrolling for anchor links */
+html {
+  scroll-padding-top: 70px; /* Height of fixed navbar */
+}
+
+/* Typography improvements */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+p {
+  line-height: 1.8;
+}
+
+/* Override any Bootstrap or template styles */
+.container-fluid,
+.row,
+.col-md-12,
+.colorlib-narrow-content {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* Hide old sidebar and any old colorlib styles */
+#colorlib-aside,
+.colorlib-nav-toggle,
+#colorlib-page,
+#container-wrap,
+#colorlib-main {
+  all: initial;
+  display: block;
+  width: 100%;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  section {
+    padding: 80px 24px !important;
   }
-  to {
-    transform: rotate(360deg);
+
+  h1 {
+    font-size: 36px !important;
+  }
+
+  h2 {
+    font-size: 28px !important;
+  }
+
+  /* Mobile Navigation adjustments */
+  nav {
+    padding: 0 24px !important;
+  }
+
+  nav > div:last-child {
+    gap: 24px !important;
+  }
+
+  nav > div:last-child > a {
+    display: none;
+  }
+
+  nav > div:last-child > div {
+    margin-left: 0 !important;
+  }
+}
+
+/* Ensure icons work properly */
+i {
+  font-style: normal;
+}
+
+/* Selection color */
+::selection {
+  background: #0A0A0A;
+  color: #FFFFFF;
+}
+
+::-moz-selection {
+  background: #0A0A0A;
+  color: #FFFFFF;
+}
+
+/* Focus styles for accessibility */
+a:focus,
+button:focus {
+  outline: 2px solid #0A0A0A;
+  outline-offset: 4px;
+}
+
+/* Print styles */
+@media print {
+  nav,
+  footer {
+    display: none;
+  }
+
+  section {
+    page-break-inside: avoid;
   }
 }
