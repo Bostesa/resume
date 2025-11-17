@@ -252,33 +252,18 @@ export default class Projects extends Component {
             alignItems: 'stretch'
           }}>
             {/* Research 1 - MQTT-DAP */}
-            <a
-              href="https://github.com/DAMSlabUMBC/dams-mosquitto/tree/develop"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ textDecoration: 'none', display: 'flex' }}
+            <div
+              style={{
+                padding: '32px',
+                border: '1px solid #E5E5E5',
+                background: '#FFFFFF',
+                transition: 'all 0.3s ease',
+                flex: '1',
+                display: 'flex',
+                flexDirection: 'column',
+                minHeight: '260px'
+              }}
             >
-              <div
-                style={{
-                  padding: '32px',
-                  border: '1px solid #E5E5E5',
-                  background: '#FFFFFF',
-                  transition: 'all 0.3s ease',
-                  cursor: 'pointer',
-                  flex: '1',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  minHeight: '260px'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = '#0A0A0A';
-                  e.currentTarget.style.transform = 'translateY(-4px)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = '#E5E5E5';
-                  e.currentTarget.style.transform = 'translateY(0)';
-                }}
-              >
               <h3 style={{
                 fontSize: '18px',
                 fontWeight: '600',
@@ -299,7 +284,8 @@ export default class Projects extends Component {
               <div style={{
                 display: 'flex',
                 flexWrap: 'wrap',
-                gap: '6px'
+                gap: '6px',
+                marginBottom: '16px'
               }}>
                 {['C', 'MQTT', 'IoT', 'GDPR'].map((tech) => (
                   <span key={tech} style={{
@@ -314,8 +300,49 @@ export default class Projects extends Component {
                   </span>
                 ))}
               </div>
+              <div style={{
+                display: 'flex',
+                gap: '12px',
+                marginTop: 'auto'
+              }}>
+                <a
+                  href="https://github.com/DAMSlabUMBC/mqtt-dap-mosquitto"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    fontSize: '13px',
+                    color: '#0A0A0A',
+                    textDecoration: 'none',
+                    fontWeight: '500',
+                    borderBottom: '1px solid #0A0A0A',
+                    paddingBottom: '2px',
+                    transition: 'opacity 0.2s'
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.opacity = '0.6'}
+                  onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
+                >
+                  Broker →
+                </a>
+                <a
+                  href="https://github.com/DAMSlabUMBC/Pub-Sub-Privacy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    fontSize: '13px',
+                    color: '#0A0A0A',
+                    textDecoration: 'none',
+                    fontWeight: '500',
+                    borderBottom: '1px solid #0A0A0A',
+                    paddingBottom: '2px',
+                    transition: 'opacity 0.2s'
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.opacity = '0.6'}
+                  onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
+                >
+                  Benchmark →
+                </a>
+              </div>
             </div>
-            </a>
 
             {/* Research 2 - PSMark */}
             <a
