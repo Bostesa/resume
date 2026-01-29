@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react'
+import React, { useState, useEffect, useRef, useMemo } from 'react'
 
 // ==================== NEURAL NETWORK CANVAS ====================
 const NeuralNetwork = ({ mousePos }) => {
@@ -578,7 +578,7 @@ const CyberHUD = () => {
 };
 
 // ==================== PORTAL VORTEX ====================
-const PortalVortex = ({ mousePos }) => {
+const PortalVortex = () => {
   return (
     <div style={{
       position: 'absolute',
@@ -770,7 +770,6 @@ const HolographicPhoto = ({ mousePos }) => {
           const radius = 170;
           const x = Math.cos(angle + Date.now() / 1000) * radius;
           const y = (i / 24) * 400 - 200;
-          const z = Math.sin(angle + Date.now() / 1000) * 50;
           return (
             <div
               key={i}
@@ -940,7 +939,7 @@ const GlitchText = ({ children }) => {
     let iteration = 0;
     const decodeInterval = setInterval(() => {
       setGlitchText(
-        children.split('').map((char, i) => {
+        children.split('').map((_, i) => {
           if (i < iteration) return children[i];
           return chars[Math.floor(Math.random() * chars.length)];
         }).join('')
@@ -958,7 +957,7 @@ const GlitchText = ({ children }) => {
       let glitchIteration = 0;
       const glitchAnim = setInterval(() => {
         setGlitchText(
-          children.split('').map((char, i) => {
+          children.split('').map((_, i) => {
             if (Math.random() > 0.3) return children[i];
             return chars[Math.floor(Math.random() * chars.length)];
           }).join('')
@@ -1207,7 +1206,7 @@ export default function Introduction() {
       <FloatingShapes />
       <MatrixRain />
       <Lightning />
-      <PortalVortex mousePos={mousePos} />
+      <PortalVortex />
       <AudioVisualizer />
 
       {/* Cursor effects */}

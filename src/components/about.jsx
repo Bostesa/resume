@@ -280,7 +280,7 @@ export default function About() {
             </div>
 
             <div style={{ color: 'rgba(255, 255, 255, 0.3)' }}>
-              // What drives me
+              {'// What drives me'}
             </div>
             <div>
               <span style={{ color: '#d946ef' }}>const</span>{' '}
