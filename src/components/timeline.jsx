@@ -1,5 +1,57 @@
 import React, { Component } from 'react'
 
+const experiences = [
+  {
+    title: 'AI Developer Intern',
+    company: 'Grassroot Analytics',
+    location: 'DC, USA',
+    date: 'Jan - May 2026',
+    color: '#6366f1',
+    bullets: [
+      'Building event-driven news pipeline with Clipbook API for real-time donor outreach',
+      'Designing data ingestion workflows across multiple news APIs',
+      'Analyzing 20M+ donor dataset for demographic segmentation'
+    ]
+  },
+  {
+    title: 'Software Engineer Intern',
+    company: 'Capital One',
+    location: 'McLean, VA',
+    date: 'Jun - Aug 2025',
+    color: '#8b5cf6',
+    bullets: [
+      'Built serverless synthetic monitoring with Lambda, Fargate, and FastAPI',
+      'Implemented APM with New Relic and Dockerized deployments',
+      'Created PagerDuty alerting and S3 incident reporting dashboard'
+    ]
+  },
+  {
+    title: 'Undergraduate Researcher',
+    company: 'DAMS Lab @ UMBC',
+    location: 'Baltimore, MD',
+    date: 'Sep 2023 - Present',
+    color: '#d946ef',
+    isResearch: true,
+    bullets: [
+      { label: 'PSMark', text: 'Erlang pub/sub benchmark — 5.4K publishers, 5.9K msg/sec', venue: 'IEEE PerCom 2026' },
+      { label: 'MQTT-DAP', text: 'Privacy-preserving MQTT — 3K lines C, <2% overhead', venue: 'ACM SenSys 2026' },
+      { label: 'SMART Campus', text: 'LiDAR occupancy prediction with HDBSCAN + SARIMAX' }
+    ]
+  },
+  {
+    title: 'Software Engineer Intern',
+    company: 'OmniSyncAI',
+    location: 'Remote',
+    date: 'May - Jul 2024',
+    color: '#22c55e',
+    bullets: [
+      'Built CRM onboarding flow with AI-powered team recommendations',
+      'Developed auth, team management, and provisioning APIs',
+      'Designed multi-tenant PostgreSQL schema for scalability'
+    ]
+  }
+];
+
 export default class Timeline extends Component {
   render() {
     return (
@@ -8,196 +60,234 @@ export default class Timeline extends Component {
         style={{
           minHeight: '100vh',
           padding: '120px 48px',
-          background: '#FAFAFA'
+          background: 'linear-gradient(180deg, #0f0f23 0%, #0a0a0a 100%)',
+          position: 'relative'
         }}
       >
+        {/* Subtle gradient accent */}
         <div style={{
-          maxWidth: '1100px',
-          margin: '0 auto'
+          position: 'absolute',
+          top: '20%',
+          right: '-10%',
+          width: '500px',
+          height: '500px',
+          background: 'radial-gradient(circle, rgba(99, 102, 241, 0.08) 0%, transparent 70%)',
+          borderRadius: '50%',
+          filter: 'blur(80px)',
+          pointerEvents: 'none'
+        }} />
+
+        <div style={{
+          maxWidth: '900px',
+          margin: '0 auto',
+          position: 'relative'
         }}>
           {/* Section Title */}
-          <h2 style={{
-            fontSize: 'clamp(36px, 5vw, 56px)',
-            fontWeight: '600',
-            color: '#0A0A0A',
-            marginBottom: '64px',
-            letterSpacing: '-1px'
-          }}>
-            Experience
-          </h2>
+          <div style={{ marginBottom: '80px' }}>
+            <span style={{
+              display: 'inline-block',
+              fontSize: '13px',
+              fontWeight: '600',
+              color: '#6366f1',
+              textTransform: 'uppercase',
+              letterSpacing: '2px',
+              marginBottom: '16px'
+            }}>
+              Experience
+            </span>
+            <h2 style={{
+              fontSize: 'clamp(36px, 5vw, 56px)',
+              fontWeight: '700',
+              color: '#FFFFFF',
+              letterSpacing: '-2px',
+              lineHeight: '1.1'
+            }}>
+              Where I've worked
+            </h2>
+          </div>
 
-          {/* Experience Cards */}
-          <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '32px'
-          }}>
-            {/* Capital One */}
-            <div
-              style={{
-                padding: '32px',
-                background: '#FFFFFF',
-                border: '1px solid #E5E5E5',
-                transition: 'border-color 0.2s ease'
-              }}
-              onMouseEnter={(e) => e.currentTarget.style.borderColor = '#0A0A0A'}
-              onMouseLeave={(e) => e.currentTarget.style.borderColor = '#E5E5E5'}
-            >
-              <div style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'flex-start',
-                marginBottom: '12px',
-                flexWrap: 'wrap',
-                gap: '12px'
-              }}>
-                <div>
-                  <h3 style={{
-                    fontSize: '18px',
-                    fontWeight: '600',
-                    color: '#0A0A0A',
-                    marginBottom: '4px',
-                    letterSpacing: '-0.3px'
-                  }}>
-                    Software Engineer Intern
-                  </h3>
-                  <h4 style={{
-                    fontSize: '15px',
-                    fontWeight: '500',
-                    color: '#6B6B6B',
-                    margin: 0
-                  }}>
-                    Capital One
-                  </h4>
-                </div>
-                <span style={{
-                  fontSize: '13px',
-                  color: '#6B6B6B',
-                  fontWeight: '500'
-                }}>
-                  Jun - Aug 2025
-                </span>
-              </div>
-              <p style={{
-                fontSize: '15px',
-                lineHeight: '1.7',
-                color: '#6B6B6B',
-                margin: 0
-              }}>
-                Built serverless monitoring solution with Python, AWS Lambda, and FastAPI. Implemented APM using New Relic.
-              </p>
-            </div>
+          {/* Timeline */}
+          <div style={{ position: 'relative' }}>
+            {/* Vertical line */}
+            <div style={{
+              position: 'absolute',
+              left: '11px',
+              top: '8px',
+              bottom: '8px',
+              width: '2px',
+              background: 'linear-gradient(180deg, #6366f1 0%, #8b5cf6 50%, #d946ef 100%)',
+              borderRadius: '2px',
+              opacity: 0.3
+            }} />
 
-            {/* UMBC Researcher */}
-            <div
-              style={{
-                padding: '32px',
-                background: '#FFFFFF',
-                border: '1px solid #E5E5E5',
-                transition: 'border-color 0.2s ease'
-              }}
-              onMouseEnter={(e) => e.currentTarget.style.borderColor = '#0A0A0A'}
-              onMouseLeave={(e) => e.currentTarget.style.borderColor = '#E5E5E5'}
-            >
-              <div style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'flex-start',
-                marginBottom: '12px',
-                flexWrap: 'wrap',
-                gap: '12px'
-              }}>
-                <div>
-                  <h3 style={{
-                    fontSize: '18px',
-                    fontWeight: '600',
-                    color: '#0A0A0A',
-                    marginBottom: '4px',
-                    letterSpacing: '-0.3px'
+            {/* Experience Cards */}
+            <div style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '32px'
+            }}>
+              {experiences.map((exp, index) => (
+                <div
+                  key={index}
+                  style={{
+                    display: 'flex',
+                    gap: '32px',
+                    paddingLeft: '0'
+                  }}
+                >
+                  {/* Timeline dot */}
+                  <div style={{
+                    flexShrink: 0,
+                    width: '24px',
+                    height: '24px',
+                    borderRadius: '50%',
+                    background: exp.color,
+                    boxShadow: `0 0 20px ${exp.color}50`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginTop: '4px'
                   }}>
-                    Undergraduate Researcher
-                  </h3>
-                  <h4 style={{
-                    fontSize: '15px',
-                    fontWeight: '500',
-                    color: '#6B6B6B',
-                    margin: 0
-                  }}>
-                    UMBC
-                  </h4>
-                </div>
-                <span style={{
-                  fontSize: '13px',
-                  color: '#6B6B6B',
-                  fontWeight: '500'
-                }}>
-                  Sep 2023 - Present
-                </span>
-              </div>
-              <p style={{
-                fontSize: '15px',
-                lineHeight: '1.7',
-                color: '#6B6B6B',
-                margin: 0
-              }}>
-                Co-authoring research on IoT protocols and distributed systems. Modified Eclipse Mosquitto (60K LOC) for GDPR compliance. Built Smart Campus ML prediction system with LiDAR sensors.
-              </p>
-            </div>
+                    <div style={{
+                      width: '8px',
+                      height: '8px',
+                      borderRadius: '50%',
+                      background: '#FFFFFF'
+                    }} />
+                  </div>
 
-            {/* OmniSyncAI */}
-            <div
-              style={{
-                padding: '32px',
-                background: '#FFFFFF',
-                border: '1px solid #E5E5E5',
-                transition: 'border-color 0.2s ease'
-              }}
-              onMouseEnter={(e) => e.currentTarget.style.borderColor = '#0A0A0A'}
-              onMouseLeave={(e) => e.currentTarget.style.borderColor = '#E5E5E5'}
-            >
-              <div style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'flex-start',
-                marginBottom: '12px',
-                flexWrap: 'wrap',
-                gap: '12px'
-              }}>
-                <div>
-                  <h3 style={{
-                    fontSize: '18px',
-                    fontWeight: '600',
-                    color: '#0A0A0A',
-                    marginBottom: '4px',
-                    letterSpacing: '-0.3px'
-                  }}>
-                    Software Engineer Intern
-                  </h3>
-                  <h4 style={{
-                    fontSize: '15px',
-                    fontWeight: '500',
-                    color: '#6B6B6B',
-                    margin: 0
-                  }}>
-                    OmniSyncAI
-                  </h4>
+                  {/* Card */}
+                  <div
+                    style={{
+                      flex: 1,
+                      padding: '28px 32px',
+                      background: 'rgba(255, 255, 255, 0.02)',
+                      border: '1px solid rgba(255, 255, 255, 0.08)',
+                      borderRadius: '16px',
+                      transition: 'all 0.3s ease',
+                      cursor: 'default'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                      e.currentTarget.style.borderColor = `${exp.color}40`;
+                      e.currentTarget.style.transform = 'translateX(8px)';
+                      e.currentTarget.style.boxShadow = `0 8px 32px ${exp.color}15`;
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)';
+                      e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.08)';
+                      e.currentTarget.style.transform = 'translateX(0)';
+                      e.currentTarget.style.boxShadow = 'none';
+                    }}
+                  >
+                    {/* Header */}
+                    <div style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'flex-start',
+                      marginBottom: '16px',
+                      flexWrap: 'wrap',
+                      gap: '12px'
+                    }}>
+                      <div>
+                        <h3 style={{
+                          fontSize: '20px',
+                          fontWeight: '600',
+                          color: '#FFFFFF',
+                          marginBottom: '4px',
+                          letterSpacing: '-0.5px'
+                        }}>
+                          {exp.title}
+                        </h3>
+                        <div style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '8px'
+                        }}>
+                          <span style={{
+                            fontSize: '15px',
+                            fontWeight: '500',
+                            color: exp.color
+                          }}>
+                            {exp.company}
+                          </span>
+                          <span style={{
+                            fontSize: '14px',
+                            color: 'rgba(255,255,255,0.4)'
+                          }}>
+                            {exp.location}
+                          </span>
+                        </div>
+                      </div>
+                      <span style={{
+                        fontSize: '13px',
+                        color: 'rgba(255,255,255,0.5)',
+                        fontWeight: '500',
+                        background: 'rgba(255,255,255,0.05)',
+                        padding: '6px 12px',
+                        borderRadius: '20px'
+                      }}>
+                        {exp.date}
+                      </span>
+                    </div>
+
+                    {/* Bullets */}
+                    <ul style={{
+                      listStyle: 'none',
+                      padding: 0,
+                      margin: 0,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '10px'
+                    }}>
+                      {exp.bullets.map((bullet, i) => (
+                        <li
+                          key={i}
+                          style={{
+                            display: 'flex',
+                            alignItems: 'flex-start',
+                            gap: '12px',
+                            fontSize: '14px',
+                            lineHeight: '1.6',
+                            color: 'rgba(255,255,255,0.7)'
+                          }}
+                        >
+                          <span style={{
+                            width: '4px',
+                            height: '4px',
+                            borderRadius: '50%',
+                            background: exp.color,
+                            marginTop: '8px',
+                            flexShrink: 0
+                          }} />
+                          {exp.isResearch && typeof bullet === 'object' ? (
+                            <span>
+                              <strong style={{ color: '#FFFFFF' }}>{bullet.label}:</strong>{' '}
+                              {bullet.text}
+                              {bullet.venue && (
+                                <span style={{
+                                  display: 'inline-flex',
+                                  marginLeft: '8px',
+                                  padding: '2px 8px',
+                                  background: `${exp.color}20`,
+                                  color: exp.color,
+                                  fontSize: '11px',
+                                  fontWeight: '600',
+                                  borderRadius: '4px'
+                                }}>
+                                  {bullet.venue}
+                                </span>
+                              )}
+                            </span>
+                          ) : (
+                            <span>{bullet}</span>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
-                <span style={{
-                  fontSize: '13px',
-                  color: '#6B6B6B',
-                  fontWeight: '500'
-                }}>
-                  May - Jul 2024
-                </span>
-              </div>
-              <p style={{
-                fontSize: '15px',
-                lineHeight: '1.7',
-                color: '#6B6B6B',
-                margin: 0
-              }}>
-                Engineered CRM account setup with Node.js, React, and PostgreSQL. Implemented AI-powered recommendations.
-              </p>
+              ))}
             </div>
           </div>
         </div>
