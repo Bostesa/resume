@@ -43,8 +43,8 @@ const experiences = [
     date: 'Sep 2023 - Present',
     isResearch: true,
     bullets: [
-      { label: 'PSMark', text: 'Erlang pub/sub benchmark — 5.4K publishers, 5.9K msg/sec', venue: 'IEEE PerCom 2026' },
-      { label: 'MQTT-DAP', text: 'Privacy-preserving MQTT — 3K lines C, <2% overhead', venue: 'ACM SenSys 2026' },
+      { label: 'PSMark', text: 'Erlang pub/sub benchmark — 5.4K publishers, 5.9K msg/sec', venue: 'IEEE PerCom 2026 (Accepted)' },
+      { label: 'MQTT-DAP', text: 'Privacy-preserving MQTT — 3K lines C, <2% overhead', venue: 'ACM SenSys 2026 (Under Review)' },
       { label: 'SMART Campus', text: 'LiDAR occupancy prediction with HDBSCAN + SARIMAX' }
     ]
   },
