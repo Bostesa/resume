@@ -1,4 +1,17 @@
 import React, { useState, useRef, useEffect } from 'react'
+import { useTheme } from '../ThemeContext'
+
+// Mobile detection hook
+const useIsMobile = () => {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
+  return isMobile;
+};
 
 const projects = [
   {
@@ -6,7 +19,6 @@ const projects = [
     description: 'AI finance assistant with natural language trading, transfers, and portfolio management',
     tech: ['FastAPI', 'Gemini', 'React', 'PostgreSQL'],
     link: 'https://github.com/Bostesa/BankBuddy',
-    gradient: 'linear-gradient(135deg, #6366f1, #8b5cf6)',
     number: '01'
   },
   {
@@ -14,7 +26,6 @@ const projects = [
     description: 'ML-powered comment analyzer using Random Forest and TF-IDF for video sentiment insights',
     tech: ['Flask', 'React', 'scikit-learn', 'Docker'],
     link: 'https://github.com/Bostesa/youtube-sentiment-analysis',
-    gradient: 'linear-gradient(135deg, #8b5cf6, #d946ef)',
     number: '02'
   },
   {
@@ -22,7 +33,6 @@ const projects = [
     description: 'Multi-modal product search using CLIP embeddings and FAISS vector retrieval',
     tech: ['FastAPI', 'Next.js', 'CLIP', 'FAISS'],
     link: 'https://github.com/Bostesa/AI-commerce-agent',
-    gradient: 'linear-gradient(135deg, #d946ef, #f43f5e)',
     number: '03'
   }
 ];
@@ -36,7 +46,6 @@ const research = [
       { label: 'Broker', url: 'https://github.com/DAMSlabUMBC/mqtt-dap-mosquitto' },
       { label: 'Benchmark', url: 'https://github.com/DAMSlabUMBC/Pub-Sub-Privacy' }
     ],
-    gradient: 'linear-gradient(135deg, #22c55e, #10b981)',
     number: '01'
   },
   {
@@ -44,7 +53,6 @@ const research = [
     description: 'Distributed pub/sub benchmarking framework with synthetic IoT workloads',
     tech: ['Erlang', 'C++', 'MQTT', 'DDS'],
     link: 'https://github.com/DAMSlabUMBC/PS-Bench',
-    gradient: 'linear-gradient(135deg, #10b981, #06b6d4)',
     number: '02'
   }
 ];
@@ -83,7 +91,7 @@ const useTextScramble = (text, isHovered) => {
 };
 
 // 3D Tilt Card with scramble effect
-const TiltCard = ({ children, gradient }) => {
+const TiltCard = ({ children, colors }) => {
   const cardRef = useRef(null);
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const [glare, setGlare] = useState({ x: 50, y: 50 });
@@ -108,6 +116,8 @@ const TiltCard = ({ children, gradient }) => {
     setTilt({ x: 0, y: 0 });
     setIsHovered(false);
   };
+
+  const gradient = `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})`;
 
   return (
     <div
@@ -206,13 +216,14 @@ const ScrollReveal = ({ children, delay = 0 }) => {
   );
 };
 
-const ProjectCard = ({ project, index }) => {
+const ProjectCard = ({ project, index, colors }) => {
   const [isHovered, setIsHovered] = useState(false);
   const scrambledTitle = useTextScramble(project.title, isHovered);
+  const gradient = `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})`;
 
   return (
     <ScrollReveal delay={index * 0.15}>
-      <TiltCard gradient={project.gradient}>
+      <TiltCard colors={colors}>
         <a
           href={project.link}
           target="_blank"
@@ -245,7 +256,7 @@ const ProjectCard = ({ project, index }) => {
               pointerEvents: 'none',
               transition: 'all 0.5s ease',
               transform: isHovered ? 'scale(1.1) translateY(-10px)' : 'scale(1)',
-              background: isHovered ? project.gradient : 'none',
+              background: isHovered ? gradient : 'none',
               WebkitBackgroundClip: isHovered ? 'text' : 'none',
               WebkitTextFillColor: isHovered ? 'transparent' : 'rgba(255, 255, 255, 0.03)'
             }}>
@@ -327,7 +338,7 @@ const ProjectCard = ({ project, index }) => {
   );
 };
 
-const ResearchCard = ({ project, index }) => {
+const ResearchCard = ({ project, index, colors }) => {
   const [isHovered, setIsHovered] = useState(false);
   const scrambledTitle = useTextScramble(project.title, isHovered);
 
@@ -349,7 +360,7 @@ const ResearchCard = ({ project, index }) => {
           display: 'flex',
           flexDirection: 'column',
           transform: isHovered ? 'translateY(-8px)' : 'translateY(0)',
-          boxShadow: isHovered ? '0 30px 60px rgba(34, 197, 94, 0.2)' : 'none'
+          boxShadow: isHovered ? `0 30px 60px ${colors.success}20` : 'none'
         }}
       >
         {/* Large number */}
@@ -359,7 +370,7 @@ const ResearchCard = ({ project, index }) => {
           right: '20px',
           fontSize: '120px',
           fontWeight: '900',
-          color: 'rgba(34, 197, 94, 0.05)',
+          color: `${colors.success}08`,
           lineHeight: 1,
           pointerEvents: 'none',
           transition: 'all 0.5s ease',
@@ -374,8 +385,8 @@ const ResearchCard = ({ project, index }) => {
           top: '32px',
           right: '32px',
           padding: '8px 16px',
-          background: isHovered ? 'rgba(34, 197, 94, 0.2)' : 'rgba(34, 197, 94, 0.1)',
-          color: '#22c55e',
+          background: isHovered ? `${colors.success}20` : `${colors.success}10`,
+          color: colors.success,
           fontSize: '11px',
           fontWeight: '700',
           borderRadius: '6px',
@@ -419,12 +430,12 @@ const ResearchCard = ({ project, index }) => {
               key={tech}
               style={{
                 padding: '10px 18px',
-                background: 'rgba(34, 197, 94, 0.1)',
-                color: '#22c55e',
+                background: `${colors.success}10`,
+                color: colors.success,
                 fontSize: '12px',
                 fontWeight: '600',
                 borderRadius: '8px',
-                border: '1px solid rgba(34, 197, 94, 0.2)',
+                border: `1px solid ${colors.success}20`,
                 transition: `all 0.3s ease ${i * 0.05}s`,
                 transform: isHovered ? 'translateY(-2px)' : 'translateY(0)'
               }}
@@ -454,8 +465,8 @@ const ResearchCard = ({ project, index }) => {
                 borderBottom: '2px solid transparent'
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.color = '#22c55e';
-                e.currentTarget.style.borderColor = '#22c55e';
+                e.currentTarget.style.color = colors.success;
+                e.currentTarget.style.borderColor = colors.success;
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.color = '#FFFFFF';
@@ -485,8 +496,8 @@ const ResearchCard = ({ project, index }) => {
                 borderBottom: '2px solid transparent'
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.color = '#22c55e';
-                e.currentTarget.style.borderColor = '#22c55e';
+                e.currentTarget.style.color = colors.success;
+                e.currentTarget.style.borderColor = colors.success;
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.color = '#FFFFFF';
@@ -506,7 +517,7 @@ const ResearchCard = ({ project, index }) => {
 };
 
 // Animated section title with split text
-const SectionTitle = ({ label, title, color }) => {
+const SectionTitle = ({ label, title, colors }) => {
   const [isVisible, setIsVisible] = useState(false);
   const ref = useRef(null);
 
@@ -525,7 +536,7 @@ const SectionTitle = ({ label, title, color }) => {
         display: 'inline-block',
         fontSize: '13px',
         fontWeight: '700',
-        color: color,
+        color: colors.secondary,
         textTransform: 'uppercase',
         letterSpacing: '4px',
         marginBottom: '24px',
@@ -563,14 +574,18 @@ const SectionTitle = ({ label, title, color }) => {
 };
 
 export default function Projects() {
+  const { colors } = useTheme();
+  const isMobile = useIsMobile();
+
   return (
     <section
       id="projects"
       style={{
-        padding: '160px 48px',
-        background: 'linear-gradient(180deg, #0a0a0a 0%, #0f0f23 100%)',
+        padding: isMobile ? '80px 20px' : '160px 48px',
+        background: colors.bgGradient,
         position: 'relative',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        transition: 'background 0.5s ease'
       }}
     >
       {/* Scanline animation keyframes */}
@@ -579,6 +594,10 @@ export default function Projects() {
           0% { top: -10%; }
           100% { top: 110%; }
         }
+        @keyframes float {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-20px); }
+        }
       `}</style>
 
       {/* Animated grid background */}
@@ -586,8 +605,8 @@ export default function Projects() {
         position: 'absolute',
         inset: 0,
         backgroundImage: `
-          linear-gradient(rgba(99, 102, 241, 0.03) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(99, 102, 241, 0.03) 1px, transparent 1px)
+          linear-gradient(${colors.primary}08 1px, transparent 1px),
+          linear-gradient(90deg, ${colors.primary}08 1px, transparent 1px)
         `,
         backgroundSize: '100px 100px',
         maskImage: 'radial-gradient(ellipse at 50% 0%, black 20%, transparent 70%)',
@@ -602,7 +621,7 @@ export default function Projects() {
         left: '5%',
         width: '600px',
         height: '600px',
-        background: 'radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, transparent 60%)',
+        background: `radial-gradient(circle, ${colors.secondary}10 0%, transparent 60%)`,
         borderRadius: '50%',
         filter: 'blur(100px)',
         animation: 'float 20s ease-in-out infinite',
@@ -614,7 +633,7 @@ export default function Projects() {
         right: '5%',
         width: '500px',
         height: '500px',
-        background: 'radial-gradient(circle, rgba(34, 197, 94, 0.08) 0%, transparent 60%)',
+        background: `radial-gradient(circle, ${colors.success}08 0%, transparent 60%)`,
         borderRadius: '50%',
         filter: 'blur(100px)',
         animation: 'float 25s ease-in-out infinite reverse',
@@ -626,31 +645,31 @@ export default function Projects() {
         margin: '0 auto',
         position: 'relative'
       }}>
-        <SectionTitle label="Projects" title="Featured work" color="#8b5cf6" />
+        <SectionTitle label="Projects" title="Featured work" colors={colors} />
 
         {/* Projects Grid */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(380px, 1fr))',
-          gap: '32px',
-          marginBottom: '160px'
+          gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(380px, 1fr))',
+          gap: isMobile ? '20px' : '32px',
+          marginBottom: isMobile ? '80px' : '160px'
         }}>
           {projects.map((project, index) => (
-            <ProjectCard key={project.title} project={project} index={index} />
+            <ProjectCard key={project.title} project={project} index={index} colors={colors} />
           ))}
         </div>
 
-        <SectionTitle label="Research" title="Academic work" color="#22c55e" />
+        <SectionTitle label="Research" title="Academic work" colors={colors} />
 
         {/* Research Grid */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(380px, 1fr))',
-          gap: '32px',
+          gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(380px, 1fr))',
+          gap: isMobile ? '20px' : '32px',
           maxWidth: '820px'
         }}>
           {research.map((project, index) => (
-            <ResearchCard key={project.title} project={project} index={index} />
+            <ResearchCard key={project.title} project={project} index={index} colors={colors} />
           ))}
         </div>
       </div>

@@ -1,48 +1,75 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useTheme } from '../ThemeContext'
 
-export default class Navigation extends Component {
-  render() {
-    return (
-      <nav style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        height: '70px',
-        background: 'rgba(10, 10, 10, 0.8)',
-        backdropFilter: 'blur(20px)',
-        WebkitBackdropFilter: 'blur(20px)',
-        borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
-        zIndex: 1000,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: '0 48px'
-      }}>
-        {/* Logo/Name */}
-        <a
-          href="#home"
-          style={{
-            fontSize: '18px',
-            fontWeight: '600',
-            color: '#FFFFFF',
-            letterSpacing: '-0.5px',
-            textDecoration: 'none',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '10px'
-          }}
-        >
-          <span style={{
-            width: '8px',
-            height: '8px',
-            borderRadius: '50%',
-            background: 'linear-gradient(135deg, #6366f1, #8b5cf6)'
-          }} />
-          Nathan Samson
-        </a>
+// Mobile detection hook
+const useIsMobile = () => {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
+  return isMobile;
+};
 
-        {/* Navigation Links */}
+export default function Navigation() {
+  const { colors } = useTheme();
+  const isMobile = useIsMobile();
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  // Close menu when clicking outside or navigating
+  useEffect(() => {
+    const handleClick = () => setMenuOpen(false);
+    if (menuOpen) {
+      document.addEventListener('click', handleClick);
+      return () => document.removeEventListener('click', handleClick);
+    }
+  }, [menuOpen]);
+
+  return (
+    <nav style={{
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      right: 0,
+      height: isMobile ? '60px' : '70px',
+      background: `${colors.bg}cc`,
+      backdropFilter: 'blur(20px)',
+      WebkitBackdropFilter: 'blur(20px)',
+      borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+      zIndex: 1000,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      padding: isMobile ? '0 20px' : '0 48px',
+      transition: 'background 0.5s ease'
+    }}>
+      {/* Logo/Name */}
+      <a
+        href="#home"
+        style={{
+          fontSize: isMobile ? '16px' : '18px',
+          fontWeight: '600',
+          color: '#FFFFFF',
+          letterSpacing: '-0.5px',
+          textDecoration: 'none',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '10px'
+        }}
+      >
+        <span style={{
+          width: '8px',
+          height: '8px',
+          borderRadius: '50%',
+          background: `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})`
+        }} />
+        {isMobile ? 'NS' : 'Nathan Samson'}
+      </a>
+
+      {/* Desktop Navigation */}
+      {!isMobile && (
         <div style={{
           display: 'flex',
           gap: '40px',
@@ -60,7 +87,7 @@ export default class Navigation extends Component {
                 transition: 'color 0.2s ease',
                 position: 'relative'
               }}
-              onMouseEnter={(e) => e.currentTarget.style.color = '#FFFFFF'}
+              onMouseEnter={(e) => e.currentTarget.style.color = colors.primary}
               onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.6)'}
             >
               {item}
@@ -86,7 +113,7 @@ export default class Navigation extends Component {
                 display: 'flex',
                 alignItems: 'center'
               }}
-              onMouseEnter={(e) => e.currentTarget.style.color = '#FFFFFF'}
+              onMouseEnter={(e) => e.currentTarget.style.color = colors.primary}
               onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.5)'}
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
@@ -104,7 +131,7 @@ export default class Navigation extends Component {
                 display: 'flex',
                 alignItems: 'center'
               }}
-              onMouseEnter={(e) => e.currentTarget.style.color = '#FFFFFF'}
+              onMouseEnter={(e) => e.currentTarget.style.color = colors.primary}
               onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.5)'}
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
@@ -113,7 +140,168 @@ export default class Navigation extends Component {
             </a>
           </div>
         </div>
-      </nav>
-    )
-  }
+      )}
+
+      {/* Mobile Hamburger Button */}
+      {isMobile && (
+        <button
+          onClick={(e) => { e.stopPropagation(); setMenuOpen(!menuOpen); }}
+          style={{
+            background: 'transparent',
+            border: 'none',
+            cursor: 'pointer',
+            padding: '8px',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '5px',
+            zIndex: 1001
+          }}
+        >
+          <span style={{
+            width: '22px',
+            height: '2px',
+            background: colors.primary,
+            borderRadius: '2px',
+            transition: 'all 0.3s ease',
+            transform: menuOpen ? 'rotate(45deg) translateY(7px)' : 'none'
+          }} />
+          <span style={{
+            width: '22px',
+            height: '2px',
+            background: colors.primary,
+            borderRadius: '2px',
+            transition: 'all 0.3s ease',
+            opacity: menuOpen ? 0 : 1
+          }} />
+          <span style={{
+            width: '22px',
+            height: '2px',
+            background: colors.primary,
+            borderRadius: '2px',
+            transition: 'all 0.3s ease',
+            transform: menuOpen ? 'rotate(-45deg) translateY(-7px)' : 'none'
+          }} />
+        </button>
+      )}
+
+      {/* Mobile Menu Dropdown */}
+      {isMobile && (
+        <div
+          onClick={(e) => e.stopPropagation()}
+          style={{
+            position: 'absolute',
+            top: '60px',
+            left: 0,
+            right: 0,
+            background: `${colors.bg}f5`,
+            backdropFilter: 'blur(20px)',
+            WebkitBackdropFilter: 'blur(20px)',
+            borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+            padding: menuOpen ? '20px' : '0 20px',
+            maxHeight: menuOpen ? '400px' : '0',
+            opacity: menuOpen ? 1 : 0,
+            overflow: 'hidden',
+            transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '8px'
+          }}
+        >
+          {['About', 'Projects', 'Experience'].map((item, i) => (
+            <a
+              key={item}
+              href={`#${item.toLowerCase()}`}
+              onClick={() => setMenuOpen(false)}
+              style={{
+                color: 'rgba(255, 255, 255, 0.8)',
+                textDecoration: 'none',
+                fontSize: '16px',
+                fontWeight: '500',
+                padding: '12px 16px',
+                borderRadius: '8px',
+                background: `${colors.primary}10`,
+                border: `1px solid ${colors.primary}20`,
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+                transition: 'all 0.2s ease',
+                transform: menuOpen ? 'translateX(0)' : 'translateX(-20px)',
+                transitionDelay: `${i * 0.05}s`
+              }}
+            >
+              <span style={{
+                width: '6px',
+                height: '6px',
+                borderRadius: '50%',
+                background: colors.primary
+              }} />
+              {item}
+            </a>
+          ))}
+
+          {/* Social links in mobile menu */}
+          <div style={{
+            display: 'flex',
+            gap: '12px',
+            marginTop: '12px',
+            paddingTop: '16px',
+            borderTop: '1px solid rgba(255, 255, 255, 0.1)'
+          }}>
+            <a
+              href="https://github.com/Bostesa"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setMenuOpen(false)}
+              style={{
+                flex: 1,
+                color: '#FFFFFF',
+                textDecoration: 'none',
+                fontSize: '14px',
+                fontWeight: '500',
+                padding: '12px',
+                borderRadius: '8px',
+                background: `${colors.primary}15`,
+                border: `1px solid ${colors.primary}30`,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px'
+              }}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+              </svg>
+              GitHub
+            </a>
+            <a
+              href="https://www.linkedin.com/in/nathan-samson-bostesa/"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setMenuOpen(false)}
+              style={{
+                flex: 1,
+                color: '#FFFFFF',
+                textDecoration: 'none',
+                fontSize: '14px',
+                fontWeight: '500',
+                padding: '12px',
+                borderRadius: '8px',
+                background: `${colors.primary}15`,
+                border: `1px solid ${colors.primary}30`,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px'
+              }}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+              </svg>
+              LinkedIn
+            </a>
+          </div>
+        </div>
+      )}
+    </nav>
+  );
 }

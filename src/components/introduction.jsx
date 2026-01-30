@@ -1,82 +1,5 @@
-import { useState, useEffect, useRef, useMemo, createContext, useContext } from 'react'
-
-// ==================== COLOR THEMES ====================
-const themes = {
-  cyber: {
-    name: 'Cyber',
-    primary: '#00f5ff',      // Electric cyan
-    secondary: '#bf00ff',    // Vivid magenta
-    accent: '#39ff14',       // Neon green
-    highlight: '#ff006e',    // Hot pink
-    warm: '#ffbe0b',         // Golden yellow
-    success: '#00ff88',      // Mint
-    glow: '#8b5cf6',         // Purple glow
-    text: '#ffffff',
-    muted: '#a0aec0',
-    bg: '#0a0a1f',
-    bgGradient: 'linear-gradient(180deg, #0a0a1f 0%, #1a0a2e 50%, #0a0a1f 100%)'
-  },
-  ocean: {
-    name: 'Ocean',
-    primary: '#0ea5e9',      // Sky blue
-    secondary: '#6366f1',    // Indigo
-    accent: '#14b8a6',       // Teal
-    highlight: '#f472b6',    // Pink
-    warm: '#38bdf8',         // Light blue
-    success: '#22d3ee',      // Cyan
-    glow: '#818cf8',         // Light indigo
-    text: '#f0f9ff',
-    muted: '#7dd3fc',
-    bg: '#0c1929',
-    bgGradient: 'linear-gradient(180deg, #0c1929 0%, #0f172a 50%, #0c1929 100%)'
-  },
-  sunset: {
-    name: 'Sunset',
-    primary: '#f97316',      // Orange
-    secondary: '#ec4899',    // Pink
-    accent: '#fbbf24',       // Amber
-    highlight: '#f43f5e',    // Rose
-    warm: '#fb923c',         // Light orange
-    success: '#facc15',      // Yellow
-    glow: '#f472b6',         // Pink glow
-    text: '#fef3c7',
-    muted: '#fdba74',
-    bg: '#1c0a1a',
-    bgGradient: 'linear-gradient(180deg, #1c0a1a 0%, #2d1a24 50%, #1c0a1a 100%)'
-  },
-  aurora: {
-    name: 'Aurora',
-    primary: '#a855f7',      // Purple
-    secondary: '#22d3ee',    // Cyan
-    accent: '#4ade80',       // Green
-    highlight: '#f472b6',    // Pink
-    warm: '#c084fc',         // Light purple
-    success: '#34d399',      // Emerald
-    glow: '#67e8f9',         // Light cyan
-    text: '#f5f3ff',
-    muted: '#c4b5fd',
-    bg: '#0f0f23',
-    bgGradient: 'linear-gradient(180deg, #0f0f23 0%, #1a1a3e 50%, #0f0f23 100%)'
-  },
-  midnight: {
-    name: 'Midnight',
-    primary: '#6366f1',      // Indigo
-    secondary: '#8b5cf6',    // Violet
-    accent: '#06b6d4',       // Cyan
-    highlight: '#f43f5e',    // Rose
-    warm: '#f59e0b',         // Amber
-    success: '#10b981',      // Emerald
-    glow: '#a855f7',         // Purple
-    text: '#f8fafc',
-    muted: '#94a3b8',
-    bg: '#08081a',
-    bgGradient: 'linear-gradient(180deg, #08081a 0%, #0d0d26 50%, #08081a 100%)'
-  }
-};
-
-// Theme context
-const ThemeContext = createContext();
-const useTheme = () => useContext(ThemeContext);
+import { useState, useEffect, useRef, useMemo } from 'react'
+import { useTheme, themes } from '../ThemeContext'
 
 // ==================== THEME TOGGLE ====================
 const ThemeToggle = ({ currentTheme, setTheme, isMobile }) => {
@@ -90,6 +13,46 @@ const ThemeToggle = ({ currentTheme, setTheme, isMobile }) => {
       left: 20,
       zIndex: 1000
     }}>
+      {/* Hint label */}
+      <div style={{
+        position: 'absolute',
+        bottom: isMobile ? 48 : 52,
+        left: 0,
+        background: `rgba(0,0,0,0.9)`,
+        backdropFilter: 'blur(10px)',
+        padding: '8px 14px',
+        borderRadius: 8,
+        opacity: !isOpen ? 1 : 0,
+        transform: !isOpen ? 'translateY(0)' : 'translateY(5px)',
+        transition: 'all 0.3s ease',
+        pointerEvents: 'none',
+        whiteSpace: 'nowrap',
+        border: `1px solid ${colors.primary}40`
+      }}>
+        <span style={{
+          color: '#ffffff',
+          fontSize: 11,
+          fontWeight: 500,
+          fontFamily: 'monospace',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 6
+        }}>
+          <span style={{ fontSize: 14 }}>🎨</span> Change theme
+        </span>
+        {/* Arrow pointing down */}
+        <div style={{
+          position: 'absolute',
+          bottom: -6,
+          left: 16,
+          width: 0,
+          height: 0,
+          borderLeft: '6px solid transparent',
+          borderRight: '6px solid transparent',
+          borderTop: '6px solid rgba(0,0,0,0.9)'
+        }} />
+      </div>
+
       {/* Toggle button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
@@ -107,6 +70,7 @@ const ThemeToggle = ({ currentTheme, setTheme, isMobile }) => {
           transition: 'all 0.3s ease',
           boxShadow: `0 4px 20px rgba(0,0,0,0.5)`
         }}
+        title="Change color theme"
       >
         <div style={{
           width: 18,
@@ -185,7 +149,7 @@ const useIsMobile = () => {
 
 // ==================== NEURAL NETWORK CANVAS ====================
 const NeuralNetwork = ({ mousePos, isMobile }) => {
-  const colors = useTheme();
+  const { colors } = useTheme();
   const canvasRef = useRef(null);
   const nodesRef = useRef([]);
   const animationRef = useRef(null);
@@ -295,7 +259,7 @@ const hexToRgb = (hex) => {
 
 // ==================== CURSOR TRAIL ====================
 const CursorTrail = ({ mousePos }) => {
-  const colors = useTheme();
+  const { colors } = useTheme();
   const [trail, setTrail] = useState([]);
   const trailRef = useRef([]);
 
@@ -339,7 +303,7 @@ const CursorTrail = ({ mousePos }) => {
 
 // ==================== FLOATING 3D SHAPES ====================
 const FloatingShapes = ({ isMobile }) => {
-  const colors = useTheme();
+  const { colors } = useTheme();
   const shapes = useMemo(() =>
     Array.from({ length: isMobile ? 6 : 12 }, (_, i) => ({
       id: i,
@@ -385,7 +349,7 @@ const FloatingShapes = ({ isMobile }) => {
 
 // ==================== MATRIX RAIN ====================
 const MatrixRain = ({ isMobile }) => {
-  const colors = useTheme();
+  const { colors } = useTheme();
   const chars = 'NATHAN01アイウエオカキクケコ∞∑∂';
   const columns = isMobile ? 15 : 30;
 
@@ -419,7 +383,7 @@ const MatrixRain = ({ isMobile }) => {
 
 // ==================== LIGHTNING ====================
 const Lightning = ({ isMobile }) => {
-  const colors = useTheme();
+  const { colors } = useTheme();
   const [bolts, setBolts] = useState([]);
 
   useEffect(() => {
@@ -480,7 +444,7 @@ const Lightning = ({ isMobile }) => {
 
 // ==================== AUDIO VISUALIZER ====================
 const AudioVisualizer = ({ isMobile }) => {
-  const colors = useTheme();
+  const { colors } = useTheme();
   const [bars, setBars] = useState(Array(isMobile ? 16 : 24).fill(0));
 
   useEffect(() => {
@@ -523,7 +487,7 @@ const AudioVisualizer = ({ isMobile }) => {
 
 // ==================== CYBER HUD ====================
 const CyberHUD = ({ isMobile }) => {
-  const colors = useTheme();
+  const { colors } = useTheme();
   const [time, setTime] = useState(new Date());
   const [stats, setStats] = useState({ cpu: 72 });
 
@@ -578,7 +542,7 @@ const CyberHUD = ({ isMobile }) => {
 
 // ==================== HOLOGRAPHIC PHOTO ====================
 const HolographicPhoto = ({ mousePos, isMobile }) => {
-  const colors = useTheme();
+  const { colors } = useTheme();
   const [glitch, setGlitch] = useState(false);
   const [scan, setScan] = useState(0);
 
@@ -681,7 +645,7 @@ const HolographicPhoto = ({ mousePos, isMobile }) => {
 
 // ==================== GLITCH TEXT ====================
 const GlitchText = ({ children, isMobile }) => {
-  const colors = useTheme();
+  const { colors } = useTheme();
   const [text, setText] = useState(children);
   const [glitching, setGlitching] = useState(false);
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -731,7 +695,7 @@ const GlitchText = ({ children, isMobile }) => {
 
 // ==================== TYPING EFFECT ====================
 const TypingText = ({ texts }) => {
-  const colors = useTheme();
+  const { colors } = useTheme();
   const [text, setText] = useState('');
   const [idx, setIdx] = useState(0);
   const [charIdx, setCharIdx] = useState(0);
@@ -789,7 +753,7 @@ const AnimatedCounter = ({ end, suffix = '' }) => {
 
 // ==================== MAGNETIC BUTTON ====================
 const MagneticButton = ({ children, href, primary, isMobile }) => {
-  const colors = useTheme();
+  const { colors } = useTheme();
   const ref = useRef(null);
   const [pos, setPos] = useState({ x: 0, y: 0 });
   const [hovered, setHovered] = useState(false);
@@ -838,8 +802,7 @@ const MagneticButton = ({ children, href, primary, isMobile }) => {
 // ==================== MAIN COMPONENT ====================
 export default function Introduction() {
   const isMobile = useIsMobile();
-  const [theme, setTheme] = useState('cyber');
-  const colors = themes[theme];
+  const { colors, currentTheme, setTheme } = useTheme();
   const [mousePos, setMousePos] = useState({ x: typeof window !== 'undefined' ? window.innerWidth / 2 : 0, y: typeof window !== 'undefined' ? window.innerHeight / 2 : 0 });
   const [scrollY, setScrollY] = useState(0);
   const [loaded, setLoaded] = useState(false);
@@ -854,7 +817,6 @@ export default function Introduction() {
   }, [isMobile]);
 
   return (
-    <ThemeContext.Provider value={colors}>
       <section id="home" style={{
         minHeight: '100vh',
         display: 'flex',
@@ -865,7 +827,7 @@ export default function Introduction() {
         overflow: 'hidden',
         transition: 'background 0.5s ease'
       }}>
-        <ThemeToggle currentTheme={theme} setTheme={setTheme} isMobile={isMobile} />
+        <ThemeToggle currentTheme={currentTheme} setTheme={setTheme} isMobile={isMobile} />
 
         <NeuralNetwork mousePos={mousePos} isMobile={isMobile} />
         <FloatingShapes isMobile={isMobile} />
@@ -1099,6 +1061,5 @@ export default function Introduction() {
           * { -webkit-tap-highlight-color: transparent; }
         `}</style>
       </section>
-    </ThemeContext.Provider>
   );
 }

@@ -1,25 +1,17 @@
 import React, { useState, useRef, useEffect } from 'react'
+import { useTheme } from '../ThemeContext'
 
-const allSkills = [
-  { name: 'Python', color: '#6366f1' },
-  { name: 'Go', color: '#6366f1' },
-  { name: 'C/C++', color: '#6366f1' },
-  { name: 'Erlang', color: '#6366f1' },
-  { name: 'JavaScript', color: '#6366f1' },
-  { name: 'Java', color: '#6366f1' },
-  { name: 'React', color: '#8b5cf6' },
-  { name: 'FastAPI', color: '#8b5cf6' },
-  { name: 'Node.js', color: '#8b5cf6' },
-  { name: 'TensorFlow', color: '#8b5cf6' },
-  { name: 'PyTorch', color: '#8b5cf6' },
-  { name: 'Docker', color: '#8b5cf6' },
-  { name: 'AWS', color: '#d946ef' },
-  { name: 'Kubernetes', color: '#d946ef' },
-  { name: 'Lambda', color: '#d946ef' },
-  { name: 'New Relic', color: '#d946ef' },
-  { name: 'PostgreSQL', color: '#d946ef' },
-  { name: 'MQTT', color: '#d946ef' },
-];
+// Mobile detection hook
+const useIsMobile = () => {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
+  return isMobile;
+};
 
 // Infinite scrolling marquee
 const Marquee = ({ children, direction = 'left', speed = 30 }) => {
@@ -74,7 +66,7 @@ const ScrollReveal = ({ children, delay = 0 }) => {
 };
 
 // Skill badge component
-const SkillBadge = ({ skill }) => (
+const SkillBadge = ({ skill, colors }) => (
   <div
     style={{
       padding: '14px 28px',
@@ -89,10 +81,10 @@ const SkillBadge = ({ skill }) => (
       cursor: 'default'
     }}
     onMouseEnter={(e) => {
-      e.currentTarget.style.background = `${skill.color}25`;
-      e.currentTarget.style.borderColor = `${skill.color}50`;
+      e.currentTarget.style.background = `${colors.primary}25`;
+      e.currentTarget.style.borderColor = `${colors.primary}50`;
       e.currentTarget.style.transform = 'scale(1.05)';
-      e.currentTarget.style.boxShadow = `0 8px 24px ${skill.color}20`;
+      e.currentTarget.style.boxShadow = `0 8px 24px ${colors.primary}20`;
     }}
     onMouseLeave={(e) => {
       e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)';
@@ -106,14 +98,39 @@ const SkillBadge = ({ skill }) => (
 );
 
 export default function About() {
+  const { colors } = useTheme();
+  const isMobile = useIsMobile();
+
+  const allSkills = [
+    { name: 'Python' },
+    { name: 'Go' },
+    { name: 'C/C++' },
+    { name: 'Erlang' },
+    { name: 'JavaScript' },
+    { name: 'Java' },
+    { name: 'React' },
+    { name: 'FastAPI' },
+    { name: 'Node.js' },
+    { name: 'TensorFlow' },
+    { name: 'PyTorch' },
+    { name: 'Docker' },
+    { name: 'AWS' },
+    { name: 'Kubernetes' },
+    { name: 'Lambda' },
+    { name: 'New Relic' },
+    { name: 'PostgreSQL' },
+    { name: 'MQTT' },
+  ];
+
   return (
     <section
       id="about"
       style={{
-        padding: '140px 48px',
-        background: 'linear-gradient(180deg, #0a0a0a 0%, #0a0a0a 100%)',
+        padding: isMobile ? '80px 20px' : '140px 48px',
+        background: colors.bgGradient,
         position: 'relative',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        transition: 'background 0.5s ease'
       }}
     >
       {/* Keyframes for marquee */}
@@ -126,6 +143,10 @@ export default function About() {
           0% { transform: translateX(-50%); }
           100% { transform: translateX(0); }
         }
+        @keyframes blink {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0; }
+        }
       `}</style>
 
       {/* Subtle accent */}
@@ -135,7 +156,7 @@ export default function About() {
         left: '-15%',
         width: '500px',
         height: '500px',
-        background: 'radial-gradient(circle, rgba(99, 102, 241, 0.06) 0%, transparent 70%)',
+        background: `radial-gradient(circle, ${colors.primary}15 0%, transparent 70%)`,
         borderRadius: '50%',
         filter: 'blur(100px)',
         pointerEvents: 'none'
@@ -146,7 +167,7 @@ export default function About() {
         right: '-15%',
         width: '400px',
         height: '400px',
-        background: 'radial-gradient(circle, rgba(217, 70, 239, 0.05) 0%, transparent 70%)',
+        background: `radial-gradient(circle, ${colors.secondary}12 0%, transparent 70%)`,
         borderRadius: '50%',
         filter: 'blur(100px)',
         pointerEvents: 'none'
@@ -164,7 +185,7 @@ export default function About() {
               display: 'inline-block',
               fontSize: '13px',
               fontWeight: '700',
-              color: '#6366f1',
+              color: colors.primary,
               textTransform: 'uppercase',
               letterSpacing: '3px',
               marginBottom: '20px'
@@ -196,24 +217,24 @@ export default function About() {
             <span style={{
               color: '#FFFFFF',
               fontWeight: '600',
-              background: 'linear-gradient(transparent 60%, rgba(99, 102, 241, 0.3) 60%)'
+              background: `linear-gradient(transparent 60%, ${colors.primary}30 60%)`
             }}>UMBC</span>{' '}
             passionate about building systems that handle{' '}
             <span style={{
               color: '#FFFFFF',
               fontWeight: '600',
-              background: 'linear-gradient(transparent 60%, rgba(139, 92, 246, 0.3) 60%)'
+              background: `linear-gradient(transparent 60%, ${colors.secondary}30 60%)`
             }}>millions of events</span>.
             Currently developing AI-powered data pipelines at{' '}
-            <span style={{ color: '#6366f1', fontWeight: '600' }}>Grassroot Analytics</span>,
+            <span style={{ color: colors.primary, fontWeight: '600' }}>Grassroot Analytics</span>,
             with experience building infrastructure at{' '}
-            <span style={{ color: '#8b5cf6', fontWeight: '600' }}>Capital One</span> and{' '}
-            <span style={{ color: '#d946ef', fontWeight: '600' }}>OmniSyncAI</span>.
+            <span style={{ color: colors.secondary, fontWeight: '600' }}>Capital One</span> and{' '}
+            <span style={{ color: colors.accent, fontWeight: '600' }}>OmniSyncAI</span>.
             Co-author on{' '}
             <span style={{
               color: '#FFFFFF',
               fontWeight: '600',
-              background: 'linear-gradient(transparent 60%, rgba(34, 197, 94, 0.3) 60%)'
+              background: `linear-gradient(transparent 60%, ${colors.success}30 60%)`
             }}>2 research papers</span>{' '}
             in IoT and distributed systems.
           </p>
@@ -238,7 +259,7 @@ export default function About() {
             <div style={{ marginBottom: '16px' }}>
               <Marquee direction="left" speed={40}>
                 {allSkills.slice(0, 9).map((skill) => (
-                  <SkillBadge key={skill.name} skill={skill} />
+                  <SkillBadge key={skill.name} skill={skill} colors={colors} />
                 ))}
               </Marquee>
             </div>
@@ -247,7 +268,7 @@ export default function About() {
             <div>
               <Marquee direction="right" speed={35}>
                 {allSkills.slice(9).map((skill) => (
-                  <SkillBadge key={skill.name} skill={skill} />
+                  <SkillBadge key={skill.name} skill={skill} colors={colors} />
                 ))}
               </Marquee>
             </div>
@@ -283,30 +304,30 @@ export default function About() {
               {'// What drives me'}
             </div>
             <div>
-              <span style={{ color: '#d946ef' }}>const</span>{' '}
+              <span style={{ color: colors.accent }}>const</span>{' '}
               <span style={{ color: '#FFFFFF' }}>passion</span>{' '}
               <span style={{ color: 'rgba(255, 255, 255, 0.5)' }}>=</span>{' '}
-              <span style={{ color: '#6366f1' }}>{'{'}</span>
+              <span style={{ color: colors.primary }}>{'{'}</span>
             </div>
             <div style={{ paddingLeft: '28px' }}>
-              <span style={{ color: '#22c55e' }}>building</span>
+              <span style={{ color: colors.success }}>building</span>
               <span style={{ color: 'rgba(255, 255, 255, 0.5)' }}>:</span>{' '}
-              <span style={{ color: '#f59e0b' }}>"systems that handle millions of events"</span>
+              <span style={{ color: colors.warm }}>"systems that handle millions of events"</span>
               <span style={{ color: 'rgba(255, 255, 255, 0.5)' }}>,</span>
             </div>
             <div style={{ paddingLeft: '28px' }}>
-              <span style={{ color: '#22c55e' }}>researching</span>
+              <span style={{ color: colors.success }}>researching</span>
               <span style={{ color: 'rgba(255, 255, 255, 0.5)' }}>:</span>{' '}
-              <span style={{ color: '#f59e0b' }}>"IoT privacy &amp; distributed protocols"</span>
+              <span style={{ color: colors.warm }}>"IoT privacy &amp; distributed protocols"</span>
               <span style={{ color: 'rgba(255, 255, 255, 0.5)' }}>,</span>
             </div>
             <div style={{ paddingLeft: '28px' }}>
-              <span style={{ color: '#22c55e' }}>solving</span>
+              <span style={{ color: colors.success }}>solving</span>
               <span style={{ color: 'rgba(255, 255, 255, 0.5)' }}>:</span>{' '}
-              <span style={{ color: '#f59e0b' }}>"problems that matter at scale"</span>
+              <span style={{ color: colors.warm }}>"problems that matter at scale"</span>
             </div>
             <div>
-              <span style={{ color: '#6366f1' }}>{'}'}</span>
+              <span style={{ color: colors.primary }}>{'}'}</span>
               <span style={{ color: 'rgba(255, 255, 255, 0.5)' }}>;</span>
             </div>
 
@@ -315,7 +336,7 @@ export default function About() {
               display: 'inline-block',
               width: '10px',
               height: '20px',
-              background: '#6366f1',
+              background: colors.primary,
               marginLeft: '4px',
               animation: 'blink 1s step-end infinite'
             }} />
@@ -327,7 +348,7 @@ export default function About() {
               right: '-50px',
               width: '200px',
               height: '200px',
-              background: 'radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%)',
+              background: `radial-gradient(circle, ${colors.primary}15 0%, transparent 70%)`,
               borderRadius: '50%',
               filter: 'blur(40px)',
               pointerEvents: 'none'

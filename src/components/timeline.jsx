@@ -1,4 +1,17 @@
-import React, { Component } from 'react'
+import React, { Component, useState, useEffect } from 'react'
+import { useTheme } from '../ThemeContext'
+
+// Mobile detection hook
+const useIsMobile = () => {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
+  return isMobile;
+};
 
 const experiences = [
   {
@@ -6,7 +19,6 @@ const experiences = [
     company: 'Grassroot Analytics',
     location: 'DC, USA',
     date: 'Jan - May 2026',
-    color: '#6366f1',
     bullets: [
       'Building event-driven news pipeline with Clipbook API for real-time donor outreach',
       'Designing data ingestion workflows across multiple news APIs',
@@ -18,7 +30,6 @@ const experiences = [
     company: 'Capital One',
     location: 'McLean, VA',
     date: 'Jun - Aug 2025',
-    color: '#8b5cf6',
     bullets: [
       'Built serverless synthetic monitoring with Lambda, Fargate, and FastAPI',
       'Implemented APM with New Relic and Dockerized deployments',
@@ -30,7 +41,6 @@ const experiences = [
     company: 'DAMS Lab @ UMBC',
     location: 'Baltimore, MD',
     date: 'Sep 2023 - Present',
-    color: '#d946ef',
     isResearch: true,
     bullets: [
       { label: 'PSMark', text: 'Erlang pub/sub benchmark — 5.4K publishers, 5.9K msg/sec', venue: 'IEEE PerCom 2026' },
@@ -43,7 +53,6 @@ const experiences = [
     company: 'OmniSyncAI',
     location: 'Remote',
     date: 'May - Jul 2024',
-    color: '#22c55e',
     bullets: [
       'Built CRM onboarding flow with AI-powered team recommendations',
       'Developed auth, team management, and provisioning APIs',
@@ -52,81 +61,93 @@ const experiences = [
   }
 ];
 
-export default class Timeline extends Component {
-  render() {
-    return (
-      <section
-        id="experience"
-        style={{
-          minHeight: '100vh',
-          padding: '120px 48px',
-          background: 'linear-gradient(180deg, #0f0f23 0%, #0a0a0a 100%)',
-          position: 'relative'
-        }}
-      >
-        {/* Subtle gradient accent */}
-        <div style={{
-          position: 'absolute',
-          top: '20%',
-          right: '-10%',
-          width: '500px',
-          height: '500px',
-          background: 'radial-gradient(circle, rgba(99, 102, 241, 0.08) 0%, transparent 70%)',
-          borderRadius: '50%',
-          filter: 'blur(80px)',
-          pointerEvents: 'none'
-        }} />
+// Functional wrapper component to use hooks
+function TimelineContent() {
+  const { colors } = useTheme();
+  const isMobile = useIsMobile();
 
-        <div style={{
-          maxWidth: '900px',
-          margin: '0 auto',
-          position: 'relative'
-        }}>
-          {/* Section Title */}
-          <div style={{ marginBottom: '80px' }}>
-            <span style={{
-              display: 'inline-block',
-              fontSize: '13px',
-              fontWeight: '600',
-              color: '#6366f1',
-              textTransform: 'uppercase',
-              letterSpacing: '2px',
-              marginBottom: '16px'
-            }}>
-              Experience
-            </span>
-            <h2 style={{
-              fontSize: 'clamp(36px, 5vw, 56px)',
-              fontWeight: '700',
-              color: '#FFFFFF',
-              letterSpacing: '-2px',
-              lineHeight: '1.1'
-            }}>
-              Where I've worked
-            </h2>
-          </div>
+  // Assign colors based on index
+  const getExpColor = (index) => {
+    const colorKeys = [colors.primary, colors.secondary, colors.accent, colors.success];
+    return colorKeys[index % colorKeys.length];
+  };
 
-          {/* Timeline */}
-          <div style={{ position: 'relative' }}>
-            {/* Vertical line */}
-            <div style={{
-              position: 'absolute',
-              left: '11px',
-              top: '8px',
-              bottom: '8px',
-              width: '2px',
-              background: 'linear-gradient(180deg, #6366f1 0%, #8b5cf6 50%, #d946ef 100%)',
-              borderRadius: '2px',
-              opacity: 0.3
-            }} />
+  return (
+    <section
+      id="experience"
+      style={{
+        minHeight: '100vh',
+        padding: isMobile ? '80px 20px' : '120px 48px',
+        background: colors.bgGradient,
+        position: 'relative',
+        transition: 'background 0.5s ease'
+      }}
+    >
+      {/* Subtle gradient accent */}
+      <div style={{
+        position: 'absolute',
+        top: '20%',
+        right: '-10%',
+        width: '500px',
+        height: '500px',
+        background: `radial-gradient(circle, ${colors.primary}12 0%, transparent 70%)`,
+        borderRadius: '50%',
+        filter: 'blur(80px)',
+        pointerEvents: 'none'
+      }} />
 
-            {/* Experience Cards */}
-            <div style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '32px'
-            }}>
-              {experiences.map((exp, index) => (
+      <div style={{
+        maxWidth: '900px',
+        margin: '0 auto',
+        position: 'relative'
+      }}>
+        {/* Section Title */}
+        <div style={{ marginBottom: '80px' }}>
+          <span style={{
+            display: 'inline-block',
+            fontSize: '13px',
+            fontWeight: '600',
+            color: colors.primary,
+            textTransform: 'uppercase',
+            letterSpacing: '2px',
+            marginBottom: '16px'
+          }}>
+            Experience
+          </span>
+          <h2 style={{
+            fontSize: 'clamp(36px, 5vw, 56px)',
+            fontWeight: '700',
+            color: '#FFFFFF',
+            letterSpacing: '-2px',
+            lineHeight: '1.1'
+          }}>
+            Where I've worked
+          </h2>
+        </div>
+
+        {/* Timeline */}
+        <div style={{ position: 'relative' }}>
+          {/* Vertical line */}
+          <div style={{
+            position: 'absolute',
+            left: '11px',
+            top: '8px',
+            bottom: '8px',
+            width: '2px',
+            background: `linear-gradient(180deg, ${colors.primary} 0%, ${colors.secondary} 50%, ${colors.accent} 100%)`,
+            borderRadius: '2px',
+            opacity: 0.3
+          }} />
+
+          {/* Experience Cards */}
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '32px'
+          }}>
+            {experiences.map((exp, index) => {
+              const expColor = getExpColor(index);
+              return (
                 <div
                   key={index}
                   style={{
@@ -141,8 +162,8 @@ export default class Timeline extends Component {
                     width: '24px',
                     height: '24px',
                     borderRadius: '50%',
-                    background: exp.color,
-                    boxShadow: `0 0 20px ${exp.color}50`,
+                    background: expColor,
+                    boxShadow: `0 0 20px ${expColor}50`,
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -169,9 +190,9 @@ export default class Timeline extends Component {
                     }}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
-                      e.currentTarget.style.borderColor = `${exp.color}40`;
+                      e.currentTarget.style.borderColor = `${expColor}40`;
                       e.currentTarget.style.transform = 'translateX(8px)';
-                      e.currentTarget.style.boxShadow = `0 8px 32px ${exp.color}15`;
+                      e.currentTarget.style.boxShadow = `0 8px 32px ${expColor}15`;
                     }}
                     onMouseLeave={(e) => {
                       e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)';
@@ -207,7 +228,7 @@ export default class Timeline extends Component {
                           <span style={{
                             fontSize: '15px',
                             fontWeight: '500',
-                            color: exp.color
+                            color: expColor
                           }}>
                             {exp.company}
                           </span>
@@ -256,7 +277,7 @@ export default class Timeline extends Component {
                             width: '4px',
                             height: '4px',
                             borderRadius: '50%',
-                            background: exp.color,
+                            background: expColor,
                             marginTop: '8px',
                             flexShrink: 0
                           }} />
@@ -269,8 +290,8 @@ export default class Timeline extends Component {
                                   display: 'inline-flex',
                                   marginLeft: '8px',
                                   padding: '2px 8px',
-                                  background: `${exp.color}20`,
-                                  color: exp.color,
+                                  background: `${expColor}20`,
+                                  color: expColor,
                                   fontSize: '11px',
                                   fontWeight: '600',
                                   borderRadius: '4px'
@@ -287,11 +308,17 @@ export default class Timeline extends Component {
                     </ul>
                   </div>
                 </div>
-              ))}
-            </div>
+              );
+            })}
           </div>
         </div>
-      </section>
-    )
+      </div>
+    </section>
+  );
+}
+
+export default class Timeline extends Component {
+  render() {
+    return <TimelineContent />;
   }
 }
