@@ -1,7 +1,191 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react'
+import { useState, useEffect, useRef, useMemo, createContext, useContext } from 'react'
+
+// ==================== COLOR THEMES ====================
+const themes = {
+  cyber: {
+    name: 'Cyber',
+    primary: '#00f5ff',      // Electric cyan
+    secondary: '#bf00ff',    // Vivid magenta
+    accent: '#39ff14',       // Neon green
+    highlight: '#ff006e',    // Hot pink
+    warm: '#ffbe0b',         // Golden yellow
+    success: '#00ff88',      // Mint
+    glow: '#8b5cf6',         // Purple glow
+    text: '#ffffff',
+    muted: '#a0aec0',
+    bg: '#0a0a1f',
+    bgGradient: 'linear-gradient(180deg, #0a0a1f 0%, #1a0a2e 50%, #0a0a1f 100%)'
+  },
+  ocean: {
+    name: 'Ocean',
+    primary: '#0ea5e9',      // Sky blue
+    secondary: '#6366f1',    // Indigo
+    accent: '#14b8a6',       // Teal
+    highlight: '#f472b6',    // Pink
+    warm: '#38bdf8',         // Light blue
+    success: '#22d3ee',      // Cyan
+    glow: '#818cf8',         // Light indigo
+    text: '#f0f9ff',
+    muted: '#7dd3fc',
+    bg: '#0c1929',
+    bgGradient: 'linear-gradient(180deg, #0c1929 0%, #0f172a 50%, #0c1929 100%)'
+  },
+  sunset: {
+    name: 'Sunset',
+    primary: '#f97316',      // Orange
+    secondary: '#ec4899',    // Pink
+    accent: '#fbbf24',       // Amber
+    highlight: '#f43f5e',    // Rose
+    warm: '#fb923c',         // Light orange
+    success: '#facc15',      // Yellow
+    glow: '#f472b6',         // Pink glow
+    text: '#fef3c7',
+    muted: '#fdba74',
+    bg: '#1c0a1a',
+    bgGradient: 'linear-gradient(180deg, #1c0a1a 0%, #2d1a24 50%, #1c0a1a 100%)'
+  },
+  aurora: {
+    name: 'Aurora',
+    primary: '#a855f7',      // Purple
+    secondary: '#22d3ee',    // Cyan
+    accent: '#4ade80',       // Green
+    highlight: '#f472b6',    // Pink
+    warm: '#c084fc',         // Light purple
+    success: '#34d399',      // Emerald
+    glow: '#67e8f9',         // Light cyan
+    text: '#f5f3ff',
+    muted: '#c4b5fd',
+    bg: '#0f0f23',
+    bgGradient: 'linear-gradient(180deg, #0f0f23 0%, #1a1a3e 50%, #0f0f23 100%)'
+  },
+  midnight: {
+    name: 'Midnight',
+    primary: '#6366f1',      // Indigo
+    secondary: '#8b5cf6',    // Violet
+    accent: '#06b6d4',       // Cyan
+    highlight: '#f43f5e',    // Rose
+    warm: '#f59e0b',         // Amber
+    success: '#10b981',      // Emerald
+    glow: '#a855f7',         // Purple
+    text: '#f8fafc',
+    muted: '#94a3b8',
+    bg: '#08081a',
+    bgGradient: 'linear-gradient(180deg, #08081a 0%, #0d0d26 50%, #08081a 100%)'
+  }
+};
+
+// Theme context
+const ThemeContext = createContext();
+const useTheme = () => useContext(ThemeContext);
+
+// ==================== THEME TOGGLE ====================
+const ThemeToggle = ({ currentTheme, setTheme, isMobile }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const colors = themes[currentTheme];
+
+  return (
+    <div style={{
+      position: 'fixed',
+      bottom: 20,
+      left: 20,
+      zIndex: 1000
+    }}>
+      {/* Toggle button */}
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        style={{
+          width: isMobile ? 40 : 44,
+          height: isMobile ? 40 : 44,
+          borderRadius: '50%',
+          border: `2px solid ${colors.primary}60`,
+          background: `rgba(0,0,0,0.8)`,
+          backdropFilter: 'blur(10px)',
+          cursor: 'pointer',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          transition: 'all 0.3s ease',
+          boxShadow: `0 4px 20px rgba(0,0,0,0.5)`
+        }}
+      >
+        <div style={{
+          width: 18,
+          height: 18,
+          borderRadius: '50%',
+          background: `conic-gradient(${colors.primary}, ${colors.secondary}, ${colors.accent}, ${colors.primary})`,
+          animation: 'spin 4s linear infinite'
+        }} />
+      </button>
+
+      {/* Theme options */}
+      <div style={{
+        position: 'absolute',
+        bottom: 52,
+        left: 0,
+        background: `rgba(0,0,0,0.9)`,
+        backdropFilter: 'blur(15px)',
+        borderRadius: 12,
+        padding: isOpen ? 10 : 0,
+        opacity: isOpen ? 1 : 0,
+        transform: isOpen ? 'translateY(0) scale(1)' : 'translateY(10px) scale(0.9)',
+        pointerEvents: isOpen ? 'auto' : 'none',
+        transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+        border: `1px solid rgba(255,255,255,0.15)`,
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 6,
+        minWidth: 130
+      }}>
+        {Object.entries(themes).map(([key, theme]) => (
+          <button
+            key={key}
+            onClick={() => { setTheme(key); setIsOpen(false); }}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 8,
+              padding: '8px 12px',
+              background: currentTheme === key ? `${theme.primary}30` : 'transparent',
+              border: currentTheme === key ? `1px solid ${theme.primary}50` : '1px solid transparent',
+              borderRadius: 8,
+              cursor: 'pointer',
+              transition: 'all 0.2s ease'
+            }}
+          >
+            <div style={{
+              width: 16,
+              height: 16,
+              borderRadius: '50%',
+              background: `linear-gradient(135deg, ${theme.primary}, ${theme.secondary})`
+            }} />
+            <span style={{
+              color: '#ffffff',
+              fontSize: 12,
+              fontWeight: currentTheme === key ? 600 : 400,
+              fontFamily: 'monospace'
+            }}>{theme.name}</span>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+// Responsive hook
+const useIsMobile = () => {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
+  return isMobile;
+};
 
 // ==================== NEURAL NETWORK CANVAS ====================
-const NeuralNetwork = ({ mousePos }) => {
+const NeuralNetwork = ({ mousePos, isMobile }) => {
+  const colors = useTheme();
   const canvasRef = useRef(null);
   const nodesRef = useRef([]);
   const animationRef = useRef(null);
@@ -17,90 +201,75 @@ const NeuralNetwork = ({ mousePos }) => {
     resize();
     window.addEventListener('resize', resize);
 
-    // Initialize nodes
-    const nodeCount = 80;
+    const nodeCount = isMobile ? 35 : 70;
+    const nodeColors = [colors.primary, colors.secondary, colors.accent, colors.warm];
     nodesRef.current = Array.from({ length: nodeCount }, () => ({
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height,
-      vx: (Math.random() - 0.5) * 0.5,
-      vy: (Math.random() - 0.5) * 0.5,
-      radius: Math.random() * 3 + 1,
-      pulsePhase: Math.random() * Math.PI * 2,
-      color: ['#6366f1', '#8b5cf6', '#d946ef', '#22c55e', '#f43f5e'][Math.floor(Math.random() * 5)]
+      vx: (Math.random() - 0.5) * (isMobile ? 0.3 : 0.4),
+      vy: (Math.random() - 0.5) * (isMobile ? 0.3 : 0.4),
+      radius: Math.random() * 2 + 1,
+      color: nodeColors[Math.floor(Math.random() * nodeColors.length)]
     }));
 
     const animate = () => {
-      ctx.fillStyle = 'rgba(3, 3, 5, 0.1)';
+      const bgColor = colors.bg || '#08081a';
+      ctx.fillStyle = bgColor.replace(')', ', 0.12)').replace('rgb', 'rgba').replace('#', '');
+      ctx.fillStyle = `rgba(${parseInt(bgColor.slice(1,3),16)}, ${parseInt(bgColor.slice(3,5),16)}, ${parseInt(bgColor.slice(5,7),16)}, 0.12)`;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       const nodes = nodesRef.current;
-      const mouse = mousePos;
+      const connectionDist = isMobile ? 100 : 130;
+      const mouseDist = isMobile ? 120 : 180;
 
       nodes.forEach((node, i) => {
-        // Mouse attraction/repulsion
-        const dx = mouse.x - node.x;
-        const dy = mouse.y - node.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-
-        if (dist < 200) {
-          const force = (200 - dist) / 200;
-          node.vx += dx * force * 0.001;
-          node.vy += dy * force * 0.001;
+        if (!isMobile) {
+          const dx = mousePos.x - node.x;
+          const dy = mousePos.y - node.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < mouseDist) {
+            const force = (mouseDist - dist) / mouseDist;
+            node.vx += dx * force * 0.001;
+            node.vy += dy * force * 0.001;
+          }
         }
 
-        // Update position
         node.x += node.vx;
         node.y += node.vy;
         node.vx *= 0.99;
         node.vy *= 0.99;
-        node.pulsePhase += 0.05;
 
-        // Wrap around edges
         if (node.x < 0) node.x = canvas.width;
         if (node.x > canvas.width) node.x = 0;
         if (node.y < 0) node.y = canvas.height;
         if (node.y > canvas.height) node.y = 0;
 
-        // Draw connections
         nodes.slice(i + 1).forEach(other => {
           const odx = other.x - node.x;
           const ody = other.y - node.y;
           const odist = Math.sqrt(odx * odx + ody * ody);
 
-          if (odist < 150) {
-            const alpha = (1 - odist / 150) * 0.5;
+          if (odist < connectionDist) {
             ctx.beginPath();
             ctx.moveTo(node.x, node.y);
             ctx.lineTo(other.x, other.y);
-            ctx.strokeStyle = `rgba(99, 102, 241, ${alpha})`;
+            const primaryRgb = hexToRgb(colors.primary);
+            ctx.strokeStyle = `rgba(${primaryRgb}, ${(1 - odist / connectionDist) * 0.35})`;
             ctx.lineWidth = 1;
             ctx.stroke();
-
-            // Data packet animation
-            if (Math.random() < 0.002) {
-              const packetX = node.x + odx * ((Date.now() % 1000) / 1000);
-              const packetY = node.y + ody * ((Date.now() % 1000) / 1000);
-              ctx.beginPath();
-              ctx.arc(packetX, packetY, 2, 0, Math.PI * 2);
-              ctx.fillStyle = '#22c55e';
-              ctx.fill();
-            }
           }
         });
 
-        // Draw node with pulse
-        const pulseRadius = node.radius + Math.sin(node.pulsePhase) * 1;
         ctx.beginPath();
-        ctx.arc(node.x, node.y, pulseRadius, 0, Math.PI * 2);
+        ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
         ctx.fillStyle = node.color;
         ctx.fill();
 
-        // Glow effect
-        const gradient = ctx.createRadialGradient(node.x, node.y, 0, node.x, node.y, pulseRadius * 4);
-        gradient.addColorStop(0, node.color + '40');
+        const gradient = ctx.createRadialGradient(node.x, node.y, 0, node.x, node.y, node.radius * 3);
+        gradient.addColorStop(0, node.color + '50');
         gradient.addColorStop(1, 'transparent');
         ctx.beginPath();
-        ctx.arc(node.x, node.y, pulseRadius * 4, 0, Math.PI * 2);
+        ctx.arc(node.x, node.y, node.radius * 3, 0, Math.PI * 2);
         ctx.fillStyle = gradient;
         ctx.fill();
       });
@@ -113,28 +282,25 @@ const NeuralNetwork = ({ mousePos }) => {
       window.removeEventListener('resize', resize);
       cancelAnimationFrame(animationRef.current);
     };
-  }, [mousePos]);
+  }, [mousePos, isMobile, colors]);
 
-  return (
-    <canvas
-      ref={canvasRef}
-      style={{
-        position: 'absolute',
-        inset: 0,
-        pointerEvents: 'none',
-        opacity: 0.6
-      }}
-    />
-  );
+  return <canvas ref={canvasRef} style={{ position: 'absolute', inset: 0, pointerEvents: 'none', opacity: 0.7 }} />;
+};
+
+// Helper function
+const hexToRgb = (hex) => {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}` : '255, 255, 255';
 };
 
 // ==================== CURSOR TRAIL ====================
 const CursorTrail = ({ mousePos }) => {
+  const colors = useTheme();
   const [trail, setTrail] = useState([]);
   const trailRef = useRef([]);
 
   useEffect(() => {
-    trailRef.current = [{ x: mousePos.x, y: mousePos.y, id: Date.now() }, ...trailRef.current.slice(0, 20)];
+    trailRef.current = [{ x: mousePos.x, y: mousePos.y, id: Date.now() }, ...trailRef.current.slice(0, 12)];
     setTrail([...trailRef.current]);
   }, [mousePos]);
 
@@ -147,135 +313,46 @@ const CursorTrail = ({ mousePos }) => {
             position: 'absolute',
             left: point.x,
             top: point.y,
-            width: 20 - i,
-            height: 20 - i,
-            background: `radial-gradient(circle, ${i % 2 === 0 ? '#6366f1' : '#d946ef'}, transparent)`,
+            width: 14 - i * 0.9,
+            height: 14 - i * 0.9,
+            background: `radial-gradient(circle, ${i % 2 === 0 ? colors.primary : colors.secondary}, transparent)`,
             borderRadius: '50%',
             transform: 'translate(-50%, -50%)',
-            opacity: 1 - i * 0.05,
-            filter: 'blur(2px)'
+            opacity: 0.5 - i * 0.04
           }}
         />
       ))}
-      {/* Main cursor glow */}
       <div style={{
         position: 'absolute',
         left: mousePos.x,
         top: mousePos.y,
-        width: 60,
-        height: 60,
-        background: 'radial-gradient(circle, rgba(99, 102, 241, 0.8), rgba(217, 70, 239, 0.4), transparent)',
+        width: 36,
+        height: 36,
+        background: `radial-gradient(circle, ${colors.glow}50, transparent)`,
         borderRadius: '50%',
         transform: 'translate(-50%, -50%)',
-        filter: 'blur(10px)',
-        mixBlendMode: 'screen'
+        filter: 'blur(6px)'
       }} />
     </div>
   );
 };
 
-// ==================== BLACK HOLE EFFECT ====================
-const BlackHole = ({ mousePos }) => {
-  const canvasRef = useRef(null);
-  const particlesRef = useRef([]);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    // Initialize particles
-    particlesRef.current = Array.from({ length: 200 }, () => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      size: Math.random() * 2 + 0.5,
-      speedX: 0,
-      speedY: 0,
-      color: Math.random() > 0.5 ? '#6366f1' : '#d946ef'
-    }));
-
-    let animationId;
-    const animate = () => {
-      ctx.fillStyle = 'rgba(3, 3, 5, 0.05)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      particlesRef.current.forEach(p => {
-        const dx = mousePos.x - p.x;
-        const dy = mousePos.y - p.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-
-        // Gravitational pull
-        if (dist < 300 && dist > 30) {
-          const force = 50 / (dist * dist);
-          p.speedX += dx * force;
-          p.speedY += dy * force;
-        }
-
-        // Event horizon - particles get sucked in and respawn
-        if (dist < 30) {
-          p.x = Math.random() * canvas.width;
-          p.y = Math.random() * canvas.height;
-          p.speedX = 0;
-          p.speedY = 0;
-        }
-
-        p.x += p.speedX;
-        p.y += p.speedY;
-        p.speedX *= 0.98;
-        p.speedY *= 0.98;
-
-        // Draw particle trail
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = p.color;
-        ctx.fill();
-      });
-
-      // Draw accretion disk
-      const gradient = ctx.createRadialGradient(mousePos.x, mousePos.y, 10, mousePos.x, mousePos.y, 100);
-      gradient.addColorStop(0, 'rgba(0, 0, 0, 0.9)');
-      gradient.addColorStop(0.3, 'rgba(99, 102, 241, 0.3)');
-      gradient.addColorStop(0.6, 'rgba(217, 70, 239, 0.2)');
-      gradient.addColorStop(1, 'transparent');
-      ctx.beginPath();
-      ctx.arc(mousePos.x, mousePos.y, 100, 0, Math.PI * 2);
-      ctx.fillStyle = gradient;
-      ctx.fill();
-
-      animationId = requestAnimationFrame(animate);
-    };
-
-    animate();
-    return () => cancelAnimationFrame(animationId);
-  }, [mousePos]);
-
-  return (
-    <canvas
-      ref={canvasRef}
-      style={{
-        position: 'absolute',
-        inset: 0,
-        pointerEvents: 'none',
-        opacity: 0.4
-      }}
-    />
-  );
-};
-
-// ==================== 3D FLOATING SHAPES ====================
-const FloatingShapes = () => {
+// ==================== FLOATING 3D SHAPES ====================
+const FloatingShapes = ({ isMobile }) => {
+  const colors = useTheme();
   const shapes = useMemo(() =>
-    Array.from({ length: 15 }, (_, i) => ({
+    Array.from({ length: isMobile ? 6 : 12 }, (_, i) => ({
       id: i,
-      type: ['cube', 'pyramid', 'octahedron'][i % 3],
-      x: Math.random() * 100,
-      y: Math.random() * 100,
-      size: 30 + Math.random() * 40,
-      duration: 15 + Math.random() * 10,
-      delay: Math.random() * -20,
-      rotateSpeed: 10 + Math.random() * 20
-    })), []);
+      x: 5 + Math.random() * 90,
+      y: 5 + Math.random() * 90,
+      size: isMobile ? 15 + Math.random() * 20 : 20 + Math.random() * 35,
+      duration: 18 + Math.random() * 12,
+      delay: Math.random() * -15,
+      rotateSpeed: 12 + Math.random() * 18,
+      colorIndex: i % 4
+    })), [isMobile]);
+
+  const colorArray = [colors.primary, colors.secondary, colors.accent, colors.warm];
 
   return (
     <div style={{ position: 'absolute', inset: 0, perspective: '1000px', pointerEvents: 'none' }}>
@@ -291,406 +368,46 @@ const FloatingShapes = () => {
             transformStyle: 'preserve-3d',
             animation: `float3d ${shape.duration}s ease-in-out infinite, spin3d ${shape.rotateSpeed}s linear infinite`,
             animationDelay: `${shape.delay}s`,
-            opacity: 0.3
+            opacity: 0.18
           }}
         >
-          {/* Wireframe cube */}
-          {shape.type === 'cube' && (
-            <div style={{
-              width: '100%',
-              height: '100%',
-              transformStyle: 'preserve-3d',
-              position: 'relative'
-            }}>
-              {[
-                { transform: 'translateZ(15px)', border: '#6366f1' },
-                { transform: 'translateZ(-15px)', border: '#6366f1' },
-                { transform: 'rotateY(90deg) translateZ(15px)', border: '#8b5cf6' },
-                { transform: 'rotateY(-90deg) translateZ(15px)', border: '#8b5cf6' },
-                { transform: 'rotateX(90deg) translateZ(15px)', border: '#d946ef' },
-                { transform: 'rotateX(-90deg) translateZ(15px)', border: '#d946ef' }
-              ].map((face, i) => (
-                <div
-                  key={i}
-                  style={{
-                    position: 'absolute',
-                    width: '100%',
-                    height: '100%',
-                    border: `1px solid ${face.border}`,
-                    transform: face.transform,
-                    boxShadow: `0 0 10px ${face.border}, inset 0 0 10px ${face.border}40`
-                  }}
-                />
-              ))}
-            </div>
-          )}
-          {/* Wireframe pyramid */}
-          {shape.type === 'pyramid' && (
-            <div style={{
-              width: 0,
-              height: 0,
-              borderLeft: `${shape.size/2}px solid transparent`,
-              borderRight: `${shape.size/2}px solid transparent`,
-              borderBottom: `${shape.size}px solid rgba(99, 102, 241, 0.3)`,
-              filter: 'drop-shadow(0 0 10px #6366f1)'
-            }} />
-          )}
-          {/* Octahedron */}
-          {shape.type === 'octahedron' && (
-            <div style={{
-              width: '100%',
-              height: '100%',
-              background: 'linear-gradient(135deg, rgba(217, 70, 239, 0.2), rgba(99, 102, 241, 0.2))',
-              clipPath: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)',
-              boxShadow: '0 0 20px #d946ef'
-            }} />
-          )}
-        </div>
-      ))}
-    </div>
-  );
-};
-
-// ==================== SCREEN GLITCH EFFECT ====================
-const ScreenGlitch = () => {
-  const [glitching, setGlitching] = useState(false);
-
-  useEffect(() => {
-    const glitchInterval = setInterval(() => {
-      if (Math.random() < 0.1) {
-        setGlitching(true);
-        setTimeout(() => setGlitching(false), 150);
-      }
-    }, 2000);
-    return () => clearInterval(glitchInterval);
-  }, []);
-
-  if (!glitching) return null;
-
-  return (
-    <div style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 10000 }}>
-      {/* RGB Split */}
-      <div style={{
-        position: 'absolute',
-        inset: 0,
-        background: 'rgba(255, 0, 0, 0.03)',
-        transform: 'translateX(-5px)',
-        mixBlendMode: 'screen'
-      }} />
-      <div style={{
-        position: 'absolute',
-        inset: 0,
-        background: 'rgba(0, 255, 255, 0.03)',
-        transform: 'translateX(5px)',
-        mixBlendMode: 'screen'
-      }} />
-      {/* Horizontal glitch bars */}
-      {[...Array(5)].map((_, i) => (
-        <div
-          key={i}
-          style={{
-            position: 'absolute',
-            left: 0,
-            right: 0,
-            top: `${Math.random() * 100}%`,
-            height: `${Math.random() * 10 + 2}px`,
-            background: `rgba(${Math.random() > 0.5 ? '99, 102, 241' : '217, 70, 239'}, 0.3)`,
-            transform: `translateX(${(Math.random() - 0.5) * 20}px)`
-          }}
-        />
-      ))}
-    </div>
-  );
-};
-
-// ==================== LIGHTNING EFFECT ====================
-const Lightning = () => {
-  const [bolts, setBolts] = useState([]);
-
-  useEffect(() => {
-    const createBolt = () => {
-      const points = [];
-      let x = Math.random() * window.innerWidth;
-      let y = 0;
-
-      while (y < window.innerHeight * 0.7) {
-        points.push({ x, y });
-        x += (Math.random() - 0.5) * 100;
-        y += 20 + Math.random() * 30;
-
-        // Branch
-        if (Math.random() < 0.3) {
-          const branchPoints = [];
-          let bx = x;
-          let by = y;
-          for (let i = 0; i < 5; i++) {
-            branchPoints.push({ x: bx, y: by });
-            bx += (Math.random() - 0.5) * 60;
-            by += 15 + Math.random() * 20;
-          }
-          points.push({ branch: branchPoints });
-        }
-      }
-      return { id: Date.now(), points, opacity: 1 };
-    };
-
-    const interval = setInterval(() => {
-      if (Math.random() < 0.05) {
-        setBolts(prev => [...prev.slice(-2), createBolt()]);
-        setTimeout(() => {
-          setBolts(prev => prev.map(b => ({ ...b, opacity: 0 })));
-        }, 100);
-      }
-    }, 500);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  return (
-    <svg style={{ position: 'absolute', inset: 0, pointerEvents: 'none', overflow: 'visible' }}>
-      <defs>
-        <filter id="glow">
-          <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
-          <feMerge>
-            <feMergeNode in="coloredBlur"/>
-            <feMergeNode in="SourceGraphic"/>
-          </feMerge>
-        </filter>
-      </defs>
-      {bolts.map(bolt => (
-        <g key={bolt.id} style={{ opacity: bolt.opacity, transition: 'opacity 0.3s' }}>
-          <polyline
-            points={bolt.points.filter(p => !p.branch).map(p => `${p.x},${p.y}`).join(' ')}
-            fill="none"
-            stroke="#6366f1"
-            strokeWidth="3"
-            filter="url(#glow)"
-          />
-          <polyline
-            points={bolt.points.filter(p => !p.branch).map(p => `${p.x},${p.y}`).join(' ')}
-            fill="none"
-            stroke="white"
-            strokeWidth="1"
-          />
-        </g>
-      ))}
-    </svg>
-  );
-};
-
-// ==================== CYBER HUD ====================
-const CyberHUD = () => {
-  const [time, setTime] = useState(new Date());
-  const [systemStats, setSystemStats] = useState({ cpu: 73, mem: 45, net: 892 });
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTime(new Date());
-      setSystemStats({
-        cpu: 70 + Math.random() * 20,
-        mem: 40 + Math.random() * 30,
-        net: 800 + Math.random() * 200
-      });
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
-
-  return (
-    <>
-      {/* Top left corner */}
-      <div style={{
-        position: 'fixed',
-        top: 20,
-        left: 20,
-        fontFamily: 'monospace',
-        fontSize: '10px',
-        color: '#22c55e',
-        textShadow: '0 0 10px #22c55e',
-        zIndex: 100
-      }}>
-        <div style={{ marginBottom: 8 }}>
-          [{time.toLocaleTimeString('en-US', { hour12: false })}]
-        </div>
-        <div style={{ opacity: 0.7 }}>SYS.STATUS: ONLINE</div>
-        <div style={{ opacity: 0.7 }}>CPU: {systemStats.cpu.toFixed(1)}%</div>
-        <div style={{ opacity: 0.7 }}>MEM: {systemStats.mem.toFixed(1)}%</div>
-      </div>
-
-      {/* Top right corner */}
-      <div style={{
-        position: 'fixed',
-        top: 20,
-        right: 20,
-        fontFamily: 'monospace',
-        fontSize: '10px',
-        color: '#6366f1',
-        textAlign: 'right',
-        zIndex: 100
-      }}>
-        <div style={{ letterSpacing: '2px' }}>NEURAL.LINK.v3.7</div>
-        <div style={{ opacity: 0.7 }}>BANDWIDTH: {systemStats.net.toFixed(0)} Mb/s</div>
-        <div style={{
-          width: 100,
-          height: 4,
-          background: 'rgba(99, 102, 241, 0.2)',
-          marginTop: 4,
-          marginLeft: 'auto'
-        }}>
           <div style={{
-            width: `${systemStats.cpu}%`,
+            width: '100%',
             height: '100%',
-            background: 'linear-gradient(90deg, #6366f1, #d946ef)',
-            boxShadow: '0 0 10px #6366f1'
+            border: `1px solid ${colorArray[shape.colorIndex]}`,
+            boxShadow: `0 0 12px ${colorArray[shape.colorIndex]}35, inset 0 0 12px ${colorArray[shape.colorIndex]}15`
           }} />
         </div>
-      </div>
-
-      {/* Corner brackets */}
-      {[
-        { top: 0, left: 0, borderTop: true, borderLeft: true },
-        { top: 0, right: 0, borderTop: true, borderRight: true },
-        { bottom: 0, left: 0, borderBottom: true, borderLeft: true },
-        { bottom: 0, right: 0, borderBottom: true, borderRight: true }
-      ].map((corner, i) => (
-        <div
-          key={i}
-          style={{
-            position: 'fixed',
-            width: 40,
-            height: 40,
-            borderColor: 'rgba(99, 102, 241, 0.3)',
-            borderStyle: 'solid',
-            borderWidth: 0,
-            ...(corner.borderTop && { borderTopWidth: 2 }),
-            ...(corner.borderBottom && { borderBottomWidth: 2 }),
-            ...(corner.borderLeft && { borderLeftWidth: 2 }),
-            ...(corner.borderRight && { borderRightWidth: 2 }),
-            top: corner.top,
-            bottom: corner.bottom,
-            left: corner.left,
-            right: corner.right,
-            zIndex: 100
-          }}
-        />
-      ))}
-    </>
-  );
-};
-
-// ==================== PORTAL VORTEX ====================
-const PortalVortex = () => {
-  return (
-    <div style={{
-      position: 'absolute',
-      left: '50%',
-      top: '30%',
-      transform: 'translate(-50%, -50%)',
-      width: 400,
-      height: 400,
-      pointerEvents: 'none'
-    }}>
-      {[...Array(12)].map((_, i) => (
-        <div
-          key={i}
-          style={{
-            position: 'absolute',
-            inset: `${i * 15}px`,
-            border: `2px solid rgba(99, 102, 241, ${0.5 - i * 0.04})`,
-            borderRadius: '50%',
-            animation: `portalSpin ${3 + i * 0.5}s linear infinite ${i % 2 === 0 ? '' : 'reverse'}`,
-            boxShadow: `0 0 ${20 - i}px rgba(99, 102, 241, ${0.3 - i * 0.02}), inset 0 0 ${20 - i}px rgba(217, 70, 239, ${0.2 - i * 0.015})`
-          }}
-        />
-      ))}
-      {/* Center glow */}
-      <div style={{
-        position: 'absolute',
-        left: '50%',
-        top: '50%',
-        width: 50,
-        height: 50,
-        transform: 'translate(-50%, -50%)',
-        background: 'radial-gradient(circle, rgba(217, 70, 239, 0.8), rgba(99, 102, 241, 0.4), transparent)',
-        borderRadius: '50%',
-        filter: 'blur(10px)',
-        animation: 'portalPulse 2s ease-in-out infinite'
-      }} />
-    </div>
-  );
-};
-
-// ==================== AUDIO VISUALIZER ====================
-const AudioVisualizer = () => {
-  const [bars, setBars] = useState(Array(32).fill(0));
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setBars(prev => prev.map((_, i) => {
-        const baseHeight = 20 + Math.sin(Date.now() / 200 + i * 0.5) * 15;
-        return baseHeight + Math.random() * 20;
-      }));
-    }, 50);
-    return () => clearInterval(interval);
-  }, []);
-
-  return (
-    <div style={{
-      position: 'absolute',
-      bottom: 100,
-      left: '50%',
-      transform: 'translateX(-50%)',
-      display: 'flex',
-      gap: 3,
-      alignItems: 'flex-end',
-      height: 60,
-      opacity: 0.4
-    }}>
-      {bars.map((height, i) => (
-        <div
-          key={i}
-          style={{
-            width: 4,
-            height: height,
-            background: `linear-gradient(to top, #6366f1, #d946ef)`,
-            borderRadius: 2,
-            boxShadow: '0 0 10px rgba(99, 102, 241, 0.5)',
-            transition: 'height 0.05s ease'
-          }}
-        />
       ))}
     </div>
   );
 };
 
-// ==================== MATRIX CODE RAIN ====================
-const MatrixRain = () => {
-  const chars = 'NATHANSAMSON01アイウエオカキクケコサシスセソタチツテト∑∂∫≈≠∞';
+// ==================== MATRIX RAIN ====================
+const MatrixRain = ({ isMobile }) => {
+  const colors = useTheme();
+  const chars = 'NATHAN01アイウエオカキクケコ∞∑∂';
+  const columns = isMobile ? 15 : 30;
+
   return (
-    <div style={{
-      position: 'absolute',
-      inset: 0,
-      overflow: 'hidden',
-      pointerEvents: 'none',
-      opacity: 0.15
-    }}>
-      {[...Array(40)].map((_, i) => (
+    <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none', opacity: 0.05 }}>
+      {[...Array(columns)].map((_, i) => (
         <div
           key={i}
           style={{
             position: 'absolute',
-            left: `${(i * 43) % 100}%`,
+            left: `${(i * (100 / columns))}%`,
             top: '-100%',
-            fontSize: '14px',
+            fontSize: isMobile ? '10px' : '12px',
             fontFamily: 'monospace',
-            color: '#22c55e',
-            textShadow: '0 0 10px #22c55e',
+            color: colors.accent,
             writingMode: 'vertical-rl',
-            animation: `matrixFall ${6 + (i % 5) * 2}s linear infinite`,
-            animationDelay: `${-i * 0.3}s`
+            animation: `matrixFall ${7 + (i % 5) * 2}s linear infinite`,
+            animationDelay: `${-i * 0.35}s`
           }}
         >
-          {[...Array(40)].map((_, j) => (
-            <span key={j} style={{ opacity: 1 - j * 0.02 }}>
+          {[...Array(isMobile ? 20 : 30)].map((_, j) => (
+            <span key={j} style={{ opacity: 1 - j * 0.03 }}>
               {chars[Math.floor(Math.random() * chars.length)]}
             </span>
           ))}
@@ -700,227 +417,103 @@ const MatrixRain = () => {
   );
 };
 
-// ==================== HOLOGRAPHIC PHOTO ====================
-const HolographicPhoto = ({ mousePos }) => {
-  const [glitch, setGlitch] = useState(false);
-  const [scanProgress, setScanProgress] = useState(0);
+// ==================== LIGHTNING ====================
+const Lightning = ({ isMobile }) => {
+  const colors = useTheme();
+  const [bolts, setBolts] = useState([]);
 
   useEffect(() => {
-    const glitchInterval = setInterval(() => {
-      setGlitch(true);
-      setTimeout(() => setGlitch(false), 100 + Math.random() * 100);
-    }, 2000 + Math.random() * 2000);
+    if (isMobile) return;
 
-    const scanInterval = setInterval(() => {
-      setScanProgress(p => (p + 1) % 100);
-    }, 30);
-
-    return () => {
-      clearInterval(glitchInterval);
-      clearInterval(scanInterval);
+    const createBolt = () => {
+      const points = [];
+      let x = Math.random() * window.innerWidth;
+      let y = 0;
+      while (y < window.innerHeight * 0.5) {
+        points.push({ x, y });
+        x += (Math.random() - 0.5) * 70;
+        y += 15 + Math.random() * 25;
+      }
+      return { id: Date.now(), points, opacity: 1 };
     };
-  }, []);
+
+    const interval = setInterval(() => {
+      if (Math.random() < 0.025) {
+        setBolts(prev => [...prev.slice(-1), createBolt()]);
+        setTimeout(() => setBolts(prev => prev.map(b => ({ ...b, opacity: 0 }))), 80);
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [isMobile]);
+
+  if (isMobile) return null;
+
+  return (
+    <svg style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
+      {bolts.map(bolt => (
+        <g key={bolt.id} style={{ opacity: bolt.opacity, transition: 'opacity 0.2s' }}>
+          <polyline
+            points={bolt.points.map(p => `${p.x},${p.y}`).join(' ')}
+            fill="none"
+            stroke={colors.accent}
+            strokeWidth="2"
+            filter="url(#glow)"
+          />
+          <polyline
+            points={bolt.points.map(p => `${p.x},${p.y}`).join(' ')}
+            fill="none"
+            stroke="white"
+            strokeWidth="1"
+          />
+        </g>
+      ))}
+      <defs>
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+          <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+    </svg>
+  );
+};
+
+// ==================== AUDIO VISUALIZER ====================
+const AudioVisualizer = ({ isMobile }) => {
+  const colors = useTheme();
+  const [bars, setBars] = useState(Array(isMobile ? 16 : 24).fill(0));
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setBars(prev => prev.map((_, i) => {
+        const base = 12 + Math.sin(Date.now() / 300 + i * 0.4) * 10;
+        return base + Math.random() * 12;
+      }));
+    }, 70);
+    return () => clearInterval(interval);
+  }, [isMobile]);
 
   return (
     <div style={{
-      position: 'relative',
-      width: '300px',
-      height: '300px',
-      margin: '0 auto 60px',
-      transformStyle: 'preserve-3d'
+      position: 'absolute',
+      bottom: isMobile ? 40 : 80,
+      left: '50%',
+      transform: 'translateX(-50%)',
+      display: 'flex',
+      gap: isMobile ? 2 : 3,
+      alignItems: 'flex-end',
+      height: isMobile ? 35 : 50,
+      opacity: 0.25
     }}>
-      {/* Holographic rings */}
-      {[0, 1, 2, 3, 4].map((i) => (
+      {bars.map((height, i) => (
         <div
           key={i}
           style={{
-            position: 'absolute',
-            inset: `${-30 - i * 20}px`,
-            border: `1px solid rgba(99, 102, 241, ${0.4 - i * 0.07})`,
-            borderRadius: '50%',
-            animation: `orbitSpin ${6 + i * 2}s linear infinite ${i % 2 === 0 ? '' : 'reverse'}`,
-            transformStyle: 'preserve-3d',
-            transform: `rotateX(${75 + i * 3}deg)`
-          }}
-        >
-          {/* Orbiting particles */}
-          {[0, 1, 2].map(j => (
-            <div
-              key={j}
-              style={{
-                position: 'absolute',
-                top: '50%',
-                left: `${j * 33}%`,
-                width: 8,
-                height: 8,
-                background: ['#6366f1', '#d946ef', '#22c55e'][j],
-                borderRadius: '50%',
-                boxShadow: `0 0 20px ${['#6366f1', '#d946ef', '#22c55e'][j]}`,
-                transform: 'translateY(-50%)'
-              }}
-            />
-          ))}
-        </div>
-      ))}
-
-      {/* DNA helix around photo */}
-      <div style={{ position: 'absolute', inset: -60, pointerEvents: 'none' }}>
-        {[...Array(24)].map((_, i) => {
-          const angle = (i / 24) * Math.PI * 4;
-          const radius = 170;
-          const x = Math.cos(angle + Date.now() / 1000) * radius;
-          const y = (i / 24) * 400 - 200;
-          return (
-            <div
-              key={i}
-              style={{
-                position: 'absolute',
-                left: '50%',
-                top: '50%',
-                width: 8,
-                height: 8,
-                background: i % 2 === 0 ? '#6366f1' : '#d946ef',
-                borderRadius: '50%',
-                transform: `translate(${x}px, ${y}px)`,
-                boxShadow: `0 0 15px ${i % 2 === 0 ? '#6366f1' : '#d946ef'}`,
-                animation: `dnaFloat 3s ease-in-out infinite`,
-                animationDelay: `${i * 0.1}s`,
-                opacity: 0.7
-              }}
-            />
-          );
-        })}
-      </div>
-
-      {/* Scanning effect */}
-      <div style={{
-        position: 'absolute',
-        inset: 0,
-        overflow: 'hidden',
-        borderRadius: '50%',
-        zIndex: 10
-      }}>
-        <div style={{
-          position: 'absolute',
-          width: '100%',
-          height: '4px',
-          top: `${scanProgress}%`,
-          background: 'linear-gradient(90deg, transparent, #22c55e, transparent)',
-          boxShadow: '0 0 30px #22c55e, 0 0 60px #22c55e',
-        }} />
-      </div>
-
-      {/* Glitch layers */}
-      <div style={{
-        position: 'absolute',
-        inset: 0,
-        borderRadius: '50%',
-        overflow: 'hidden',
-        zIndex: 1
-      }}>
-        <img
-          src="/images/about.jpg"
-          alt=""
-          style={{
-            position: 'absolute',
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            filter: 'hue-rotate(180deg)',
-            opacity: glitch ? 0.7 : 0,
-            transform: glitch ? 'translateX(-8px) skewX(-2deg)' : 'none',
-            mixBlendMode: 'screen'
-          }}
-        />
-        <img
-          src="/images/about.jpg"
-          alt=""
-          style={{
-            position: 'absolute',
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            filter: 'hue-rotate(-90deg)',
-            opacity: glitch ? 0.7 : 0,
-            transform: glitch ? 'translateX(8px) skewX(2deg)' : 'none',
-            mixBlendMode: 'screen'
-          }}
-        />
-      </div>
-
-      {/* Main photo */}
-      <div style={{
-        position: 'relative',
-        width: '100%',
-        height: '100%',
-        borderRadius: '50%',
-        padding: '5px',
-        background: 'linear-gradient(135deg, #6366f1, #8b5cf6, #d946ef, #f43f5e, #22c55e, #6366f1)',
-        backgroundSize: '600% 600%',
-        animation: 'gradientShift 4s ease infinite'
-      }}>
-        <div style={{
-          width: '100%',
-          height: '100%',
-          borderRadius: '50%',
-          overflow: 'hidden',
-          position: 'relative',
-          transform: `perspective(1000px) rotateY(${(mousePos.x - window.innerWidth / 2) * 0.02}deg) rotateX(${-(mousePos.y - window.innerHeight / 2) * 0.02}deg)`,
-          transition: 'transform 0.1s ease-out'
-        }}>
-          <img
-            src="/images/about.jpg"
-            alt="Nathan Samson"
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              filter: glitch ? 'hue-rotate(90deg) saturate(2) contrast(1.2)' : 'none',
-              transition: 'filter 0.1s'
-            }}
-          />
-          {/* Holographic shimmer */}
-          <div style={{
-            position: 'absolute',
-            inset: 0,
-            background: `linear-gradient(${135 + (mousePos.x / window.innerWidth) * 90}deg, transparent 30%, rgba(99, 102, 241, 0.3) 45%, rgba(217, 70, 239, 0.3) 55%, transparent 70%)`,
-            animation: 'holographicShimmer 2s linear infinite'
-          }} />
-        </div>
-      </div>
-
-      {/* Data readouts */}
-      {['TL', 'TR', 'BL', 'BR'].map((pos, i) => (
-        <div
-          key={pos}
-          style={{
-            position: 'absolute',
-            [pos.includes('T') ? 'top' : 'bottom']: '-45px',
-            [pos.includes('L') ? 'left' : 'right']: '-45px',
-            fontSize: '8px',
-            fontFamily: 'monospace',
-            color: '#6366f1',
-            opacity: 0.8,
-            textShadow: '0 0 5px #6366f1'
-          }}
-        >
-          <div>[{`0x${(i * 2137 + Date.now() % 1000).toString(16).toUpperCase().slice(0, 4)}`}]</div>
-          <div style={{ opacity: 0.5 }}>{['INIT', 'SYNC', 'LOAD', 'EXEC'][i]}</div>
-        </div>
-      ))}
-
-      {/* Energy pulses */}
-      {[...Array(5)].map((_, i) => (
-        <div
-          key={i}
-          style={{
-            position: 'absolute',
-            inset: '-15px',
-            border: '2px solid rgba(99, 102, 241, 0.6)',
-            borderRadius: '50%',
-            animation: `energyPulse 2.5s ease-out infinite`,
-            animationDelay: `${i * 0.5}s`,
-            opacity: 0
+            width: isMobile ? 2 : 3,
+            height: height * (isMobile ? 0.7 : 1),
+            background: `linear-gradient(to top, ${colors.primary}, ${colors.secondary})`,
+            borderRadius: 2,
+            transition: 'height 0.07s ease'
           }}
         />
       ))}
@@ -928,807 +521,584 @@ const HolographicPhoto = ({ mousePos }) => {
   );
 };
 
-// ==================== GLITCH TEXT ====================
-const GlitchText = ({ children }) => {
-  const [glitchText, setGlitchText] = useState(children);
-  const [isGlitching, setIsGlitching] = useState(false);
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*<>[]{}';
+// ==================== CYBER HUD ====================
+const CyberHUD = ({ isMobile }) => {
+  const colors = useTheme();
+  const [time, setTime] = useState(new Date());
+  const [stats, setStats] = useState({ cpu: 72 });
 
   useEffect(() => {
-    // Initial decode animation
-    let iteration = 0;
-    const decodeInterval = setInterval(() => {
-      setGlitchText(
-        children.split('').map((_, i) => {
-          if (i < iteration) return children[i];
-          return chars[Math.floor(Math.random() * chars.length)];
-        }).join('')
-      );
-      iteration += 0.5;
-      if (iteration >= children.length) {
-        clearInterval(decodeInterval);
-        setGlitchText(children);
-      }
-    }, 30);
-
-    // Periodic glitch
-    const glitchInterval = setInterval(() => {
-      setIsGlitching(true);
-      let glitchIteration = 0;
-      const glitchAnim = setInterval(() => {
-        setGlitchText(
-          children.split('').map((_, i) => {
-            if (Math.random() > 0.3) return children[i];
-            return chars[Math.floor(Math.random() * chars.length)];
-          }).join('')
-        );
-        glitchIteration++;
-        if (glitchIteration > 5) {
-          clearInterval(glitchAnim);
-          setGlitchText(children);
-          setIsGlitching(false);
-        }
-      }, 50);
-    }, 4000);
-
-    return () => {
-      clearInterval(decodeInterval);
-      clearInterval(glitchInterval);
-    };
-  }, [children]);
+    const timer = setInterval(() => {
+      setTime(new Date());
+      setStats({ cpu: 65 + Math.random() * 25 });
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   return (
-    <span style={{ position: 'relative', display: 'inline-block' }}>
-      {/* Glitch shadows */}
-      <span style={{
-        position: 'absolute',
-        left: isGlitching ? '3px' : '2px',
-        top: 0,
-        color: '#ff0040',
-        opacity: isGlitching ? 1 : 0.6,
-        animation: 'glitchSkew 0.5s infinite linear alternate-reverse',
-        clipPath: 'polygon(0 0, 100% 0, 100% 35%, 0 35%)'
-      }}>{glitchText}</span>
-      <span style={{
-        position: 'absolute',
-        left: isGlitching ? '-3px' : '-2px',
-        top: 0,
-        color: '#00ffff',
-        opacity: isGlitching ? 1 : 0.6,
-        animation: 'glitchSkew 0.4s infinite linear alternate-reverse',
-        clipPath: 'polygon(0 65%, 100% 65%, 100% 100%, 0 100%)'
-      }}>{glitchText}</span>
-      {/* Main text */}
-      <span style={{
-        background: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 25%, #d946ef 50%, #f43f5e 75%, #6366f1 100%)',
-        backgroundSize: '400% 400%',
-        WebkitBackgroundClip: 'text',
-        WebkitTextFillColor: 'transparent',
-        backgroundClip: 'text',
-        animation: 'gradientShift 3s ease infinite'
-      }}>{glitchText}</span>
-    </span>
+    <>
+      <div style={{
+        position: 'fixed',
+        top: isMobile ? 12 : 20,
+        left: isMobile ? 12 : 20,
+        fontFamily: 'monospace',
+        fontSize: isMobile ? '9px' : '10px',
+        color: colors.success,
+        opacity: 0.7,
+        zIndex: 100
+      }}>
+        <div>[{time.toLocaleTimeString('en-US', { hour12: false })}]</div>
+        {!isMobile && <div style={{ opacity: 0.8 }}>SYS.ACTIVE</div>}
+      </div>
+
+      {!isMobile && (
+        <div style={{
+          position: 'fixed', top: 20, right: 140,
+          fontFamily: 'monospace', fontSize: '10px', color: colors.primary, opacity: 0.7, textAlign: 'right', zIndex: 100
+        }}>
+          <div>NEURAL.LINK</div>
+          <div style={{ marginTop: 4, width: 80, height: 3, background: `${colors.primary}25`, borderRadius: 2 }}>
+            <div style={{ width: `${stats.cpu}%`, height: '100%', background: `linear-gradient(90deg, ${colors.primary}, ${colors.secondary})`, borderRadius: 2, transition: 'width 0.3s' }} />
+          </div>
+        </div>
+      )}
+
+      {!isMobile && [{ top: 0, left: 0 }, { top: 0, right: 0 }, { bottom: 0, left: 0 }, { bottom: 0, right: 0 }].map((pos, i) => (
+        <div key={i} style={{
+          position: 'fixed', ...pos, width: 25, height: 25,
+          borderColor: `${colors.primary}30`, borderStyle: 'solid', borderWidth: 0,
+          borderTopWidth: pos.top === 0 ? 1 : 0, borderBottomWidth: pos.bottom === 0 ? 1 : 0,
+          borderLeftWidth: pos.left === 0 ? 1 : 0, borderRightWidth: pos.right === 0 ? 1 : 0,
+          zIndex: 100
+        }} />
+      ))}
+    </>
   );
 };
 
-// ==================== ANIMATED COUNTER ====================
-const AnimatedCounter = ({ end, suffix = '' }) => {
-  const [count, setCount] = useState(0);
-  const [isVisible, setIsVisible] = useState(false);
-  const ref = useRef(null);
+// ==================== HOLOGRAPHIC PHOTO ====================
+const HolographicPhoto = ({ mousePos, isMobile }) => {
+  const colors = useTheme();
+  const [glitch, setGlitch] = useState(false);
+  const [scan, setScan] = useState(0);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) setIsVisible(true); },
-      { threshold: 0.5 }
-    );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
+    const glitchInt = setInterval(() => {
+      if (Math.random() < 0.2) {
+        setGlitch(true);
+        setTimeout(() => setGlitch(false), 100);
+      }
+    }, 3000);
+    const scanInt = setInterval(() => setScan(p => (p + 1) % 100), 40);
+    return () => { clearInterval(glitchInt); clearInterval(scanInt); };
   }, []);
 
-  useEffect(() => {
-    if (!isVisible) return;
-    let startTime;
-    const endValue = parseInt(end);
-    const animate = (currentTime) => {
-      if (!startTime) startTime = currentTime;
-      const progress = Math.min((currentTime - startTime) / 2000, 1);
-      const easeOutQuart = 1 - Math.pow(1 - progress, 4);
-      setCount(Math.floor(easeOutQuart * endValue));
-      if (progress < 1) requestAnimationFrame(animate);
-    };
-    requestAnimationFrame(animate);
-  }, [isVisible, end]);
-
-  return <span ref={ref}>{count}{suffix}</span>;
-};
-
-// ==================== MAGNETIC BUTTON ====================
-const MagneticButton = ({ children, href, style }) => {
-  const buttonRef = useRef(null);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [isHovered, setIsHovered] = useState(false);
-  const [ripples, setRipples] = useState([]);
-
-  const handleMouseMove = (e) => {
-    const rect = buttonRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left - rect.width / 2;
-    const y = e.clientY - rect.top - rect.height / 2;
-    setPosition({ x: x * 0.4, y: y * 0.4 });
-  };
-
-  const handleClick = (e) => {
-    const rect = buttonRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    setRipples(prev => [...prev, { x, y, id: Date.now() }]);
-    setTimeout(() => setRipples(prev => prev.slice(1)), 1000);
-  };
+  const size = isMobile ? 200 : 280;
+  const ringOffset = isMobile ? 16 : 22;
+  const ringColors = [colors.primary, colors.secondary, colors.warm];
 
   return (
-    <a
-      ref={buttonRef}
-      href={href}
-      target={href.startsWith('http') ? '_blank' : undefined}
-      rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
-      style={{
-        ...style,
-        transform: `translate(${position.x}px, ${position.y}px) scale(${isHovered ? 1.1 : 1})`,
-        transition: 'transform 0.2s cubic-bezier(0.23, 1, 0.32, 1)',
-        position: 'relative',
-        overflow: 'hidden'
-      }}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => { setPosition({ x: 0, y: 0 }); setIsHovered(false); }}
-      onClick={handleClick}
-    >
-      {/* Ripple effects */}
-      {ripples.map(ripple => (
-        <span
-          key={ripple.id}
-          style={{
-            position: 'absolute',
-            left: ripple.x,
-            top: ripple.y,
-            width: 10,
-            height: 10,
-            background: 'rgba(255, 255, 255, 0.5)',
-            borderRadius: '50%',
-            transform: 'translate(-50%, -50%)',
-            animation: 'rippleExpand 1s ease-out forwards',
-            pointerEvents: 'none'
-          }}
-        />
-      ))}
-      {/* Shine effect */}
-      {isHovered && (
-        <div style={{
+    <div style={{ position: 'relative', width: `${size}px`, height: `${size}px`, margin: `0 auto ${isMobile ? 30 : 50}px` }}>
+      {[0, 1, 2].map(i => (
+        <div key={i} style={{
           position: 'absolute',
-          inset: 0,
-          background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)',
-          animation: 'buttonShine 0.5s ease'
+          inset: `${-ringOffset - i * ringOffset}px`,
+          border: `1px solid ${ringColors[i]}${isMobile ? '30' : '45'}`,
+          borderRadius: '50%',
+          animation: `orbitSpin ${12 + i * 6}s linear infinite ${i % 2 ? 'reverse' : ''}`
+        }}>
+          <div style={{
+            position: 'absolute', top: '50%', left: '-4px',
+            width: isMobile ? 6 : 10,
+            height: isMobile ? 6 : 10,
+            background: ringColors[i],
+            borderRadius: '50%',
+            boxShadow: `0 0 ${isMobile ? 12 : 20}px ${ringColors[i]}`,
+            transform: 'translateY(-50%)'
+          }} />
+        </div>
+      ))}
+
+      <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', borderRadius: '50%', zIndex: 5 }}>
+        <div style={{
+          position: 'absolute', width: '100%', height: '2px', top: `${scan}%`,
+          background: `linear-gradient(90deg, transparent, ${colors.accent}, transparent)`,
+          boxShadow: `0 0 20px ${colors.accent}`
         }} />
-      )}
-      {children}
-    </a>
+      </div>
+
+      <div style={{
+        position: 'relative', width: '100%', height: '100%', borderRadius: '50%', padding: '3px',
+        background: `linear-gradient(135deg, ${colors.primary}, ${colors.secondary}, ${colors.warm})`,
+        backgroundSize: '200% 200%', animation: 'gradientShift 5s ease infinite'
+      }}>
+        <div style={{
+          width: '100%', height: '100%', borderRadius: '50%', overflow: 'hidden', background: colors.bg,
+          transform: isMobile ? 'none' : `perspective(1000px) rotateY(${(mousePos.x - window.innerWidth / 2) * 0.01}deg) rotateX(${-(mousePos.y - window.innerHeight / 2) * 0.01}deg)`,
+          transition: 'transform 0.15s ease-out'
+        }}>
+          <img
+            src="/images/about.png"
+            alt="Nathan Samson"
+            style={{
+              width: '100%', height: '100%', objectFit: 'cover',
+              filter: glitch ? 'hue-rotate(50deg) saturate(1.3)' : 'none',
+              transition: 'filter 0.1s'
+            }}
+          />
+          <div style={{
+            position: 'absolute', inset: 0,
+            background: `linear-gradient(135deg, transparent 35%, ${colors.primary}20 50%, transparent 65%)`,
+            animation: 'holographicShine 3s ease-in-out infinite'
+          }} />
+        </div>
+      </div>
+
+      {!isMobile && ['TL', 'BR'].map((pos, i) => (
+        <div key={pos} style={{
+          position: 'absolute',
+          [pos.includes('T') ? 'top' : 'bottom']: '-38px',
+          [pos.includes('L') ? 'left' : 'right']: '-38px',
+          fontSize: '8px', fontFamily: 'monospace', color: colors.primary, opacity: 0.5
+        }}>
+          [{`0x${(i * 2749 + Date.now() % 100).toString(16).toUpperCase().slice(0, 4)}`}]
+        </div>
+      ))}
+
+      {[0, 1, 2].map(i => (
+        <div key={i} style={{
+          position: 'absolute', inset: '-10px',
+          border: `2px solid ${colors.glow}`,
+          borderRadius: '50%',
+          animation: `energyPulse 2.5s ease-out infinite`,
+          animationDelay: `${i * 0.8}s`,
+          opacity: 0
+        }} />
+      ))}
+    </div>
+  );
+};
+
+// ==================== GLITCH TEXT ====================
+const GlitchText = ({ children, isMobile }) => {
+  const colors = useTheme();
+  const [text, setText] = useState(children);
+  const [glitching, setGlitching] = useState(false);
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+
+  useEffect(() => {
+    let iteration = 0;
+    const decode = setInterval(() => {
+      setText(children.split('').map((c, i) => c === ' ' ? ' ' : i < iteration ? children[i] : chars[Math.floor(Math.random() * chars.length)]).join(''));
+      iteration += 0.7;
+      if (iteration >= children.length) { clearInterval(decode); setText(children); }
+    }, 35);
+
+    const glitchInt = setInterval(() => {
+      setGlitching(true);
+      setTimeout(() => setGlitching(false), 100);
+    }, 4500);
+
+    return () => { clearInterval(decode); clearInterval(glitchInt); };
+  }, [children]);
+
+  const offset = isMobile ? 1.5 : 2;
+
+  return (
+    <span style={{ position: 'relative', display: 'inline-block' }}>
+      {/* Colored shadow layers for glitch effect */}
+      <span style={{
+        position: 'absolute', left: glitching ? `${offset + 1}px` : `${offset}px`, top: 0,
+        color: colors.highlight, opacity: glitching ? 0.6 : 0.3,
+        clipPath: 'polygon(0 0, 100% 0, 100% 35%, 0 35%)',
+        textShadow: 'none'
+      }}>{text}</span>
+      <span style={{
+        position: 'absolute', left: glitching ? `-${offset + 1}px` : `-${offset}px`, top: 0,
+        color: colors.accent, opacity: glitching ? 0.6 : 0.3,
+        clipPath: 'polygon(0 65%, 100% 65%, 100% 100%, 0 100%)',
+        textShadow: 'none'
+      }}>{text}</span>
+      {/* Main text - solid white with colored glow */}
+      <span style={{
+        color: '#ffffff',
+        textShadow: `0 0 40px ${colors.primary}, 0 0 80px ${colors.secondary}40, 0 4px 20px rgba(0,0,0,0.8)`,
+        position: 'relative'
+      }}>{text}</span>
+    </span>
   );
 };
 
 // ==================== TYPING EFFECT ====================
 const TypingText = ({ texts }) => {
-  const [currentText, setCurrentText] = useState('');
-  const [textIndex, setTextIndex] = useState(0);
-  const [charIndex, setCharIndex] = useState(0);
-  const [isDeleting, setIsDeleting] = useState(false);
+  const colors = useTheme();
+  const [text, setText] = useState('');
+  const [idx, setIdx] = useState(0);
+  const [charIdx, setCharIdx] = useState(0);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
-    const text = texts[textIndex];
+    const current = texts[idx];
     const timeout = setTimeout(() => {
-      if (!isDeleting && charIndex < text.length) {
-        setCurrentText(text.substring(0, charIndex + 1));
-        setCharIndex(charIndex + 1);
-      } else if (isDeleting && charIndex > 0) {
-        setCurrentText(text.substring(0, charIndex - 1));
-        setCharIndex(charIndex - 1);
-      } else if (!isDeleting && charIndex === text.length) {
-        setTimeout(() => setIsDeleting(true), 2000);
-      } else if (isDeleting && charIndex === 0) {
-        setIsDeleting(false);
-        setTextIndex((textIndex + 1) % texts.length);
+      if (!deleting && charIdx < current.length) {
+        setText(current.substring(0, charIdx + 1));
+        setCharIdx(charIdx + 1);
+      } else if (deleting && charIdx > 0) {
+        setText(current.substring(0, charIdx - 1));
+        setCharIdx(charIdx - 1);
+      } else if (!deleting && charIdx === current.length) {
+        setTimeout(() => setDeleting(true), 2500);
+      } else if (deleting && charIdx === 0) {
+        setDeleting(false);
+        setIdx((idx + 1) % texts.length);
       }
-    }, isDeleting ? 30 : 80);
-
+    }, deleting ? 25 : 55);
     return () => clearTimeout(timeout);
-  }, [charIndex, isDeleting, textIndex, texts]);
+  }, [charIdx, deleting, idx, texts]);
+
+  return <span>{text}<span style={{ color: colors.primary, animation: 'blink 1s step-end infinite' }}>|</span></span>;
+};
+
+// ==================== ANIMATED COUNTER ====================
+const AnimatedCounter = ({ end, suffix = '' }) => {
+  const [count, setCount] = useState(0);
+  const [visible, setVisible] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setVisible(true); }, { threshold: 0.5 });
+    if (ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!visible) return;
+    let start;
+    const endVal = parseInt(end);
+    const anim = (t) => {
+      if (!start) start = t;
+      const p = Math.min((t - start) / 1500, 1);
+      setCount(Math.floor((1 - Math.pow(1 - p, 3)) * endVal));
+      if (p < 1) requestAnimationFrame(anim);
+    };
+    requestAnimationFrame(anim);
+  }, [visible, end]);
+
+  return <span ref={ref}>{count}{suffix}</span>;
+};
+
+// ==================== MAGNETIC BUTTON ====================
+const MagneticButton = ({ children, href, primary, isMobile }) => {
+  const colors = useTheme();
+  const ref = useRef(null);
+  const [pos, setPos] = useState({ x: 0, y: 0 });
+  const [hovered, setHovered] = useState(false);
 
   return (
-    <span>
-      {currentText}
-      <span style={{
-        animation: 'blink 1s step-end infinite',
-        color: '#6366f1'
-      }}>|</span>
-    </span>
+    <a
+      ref={ref}
+      href={href}
+      target={href.startsWith('http') ? '_blank' : undefined}
+      rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: isMobile ? '8px' : '10px',
+        padding: isMobile ? '14px 24px' : '16px 32px',
+        background: primary ? `linear-gradient(135deg, ${colors.primary} 0%, ${colors.secondary} 100%)` : `${colors.primary}10`,
+        color: colors.text,
+        textDecoration: 'none',
+        fontSize: isMobile ? '13px' : '14px',
+        fontWeight: '500',
+        borderRadius: '12px',
+        border: primary ? 'none' : `1px solid ${colors.primary}30`,
+        cursor: 'pointer',
+        transform: isMobile ? `scale(${hovered ? 1.02 : 1})` : `translate(${pos.x}px, ${pos.y}px) scale(${hovered ? 1.05 : 1})`,
+        transition: 'transform 0.2s ease, box-shadow 0.3s ease',
+        boxShadow: hovered ? (primary ? `0 15px 40px ${colors.primary}40` : `0 10px 30px ${colors.primary}15`) : 'none',
+        minWidth: isMobile ? '140px' : 'auto',
+        WebkitTapHighlightColor: 'transparent'
+      }}
+      onMouseMove={e => {
+        if (isMobile) return;
+        const r = ref.current.getBoundingClientRect();
+        setPos({ x: (e.clientX - r.left - r.width / 2) * 0.25, y: (e.clientY - r.top - r.height / 2) * 0.25 });
+      }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => { setPos({ x: 0, y: 0 }); setHovered(false); }}
+      onTouchStart={() => setHovered(true)}
+      onTouchEnd={() => setHovered(false)}
+    >
+      {children}
+    </a>
   );
 };
 
 // ==================== MAIN COMPONENT ====================
 export default function Introduction() {
-  const [mousePos, setMousePos] = useState({
-    x: typeof window !== 'undefined' ? window.innerWidth / 2 : 0,
-    y: typeof window !== 'undefined' ? window.innerHeight / 2 : 0
-  });
+  const isMobile = useIsMobile();
+  const [theme, setTheme] = useState('cyber');
+  const colors = themes[theme];
+  const [mousePos, setMousePos] = useState({ x: typeof window !== 'undefined' ? window.innerWidth / 2 : 0, y: typeof window !== 'undefined' ? window.innerHeight / 2 : 0 });
   const [scrollY, setScrollY] = useState(0);
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     setLoaded(true);
-    const handleMouseMove = (e) => setMousePos({ x: e.clientX, y: e.clientY });
-    const handleScroll = () => setScrollY(window.scrollY);
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
+    const onMouse = (e) => !isMobile && setMousePos({ x: e.clientX, y: e.clientY });
+    const onScroll = () => setScrollY(window.scrollY);
+    window.addEventListener('mousemove', onMouse);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => { window.removeEventListener('mousemove', onMouse); window.removeEventListener('scroll', onScroll); };
+  }, [isMobile]);
 
   return (
-    <section
-      id="home"
-      style={{
+    <ThemeContext.Provider value={colors}>
+      <section id="home" style={{
         minHeight: '100vh',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        background: 'linear-gradient(180deg, #030305 0%, #0a0a15 50%, #030305 100%)',
+        background: colors.bgGradient,
         position: 'relative',
-        overflow: 'hidden'
-      }}
-    >
-      {/* SVG Filters */}
-      <svg style={{ position: 'absolute', width: 0, height: 0 }}>
-        <defs>
-          <filter id="glow">
-            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
-            <feMerge>
-              <feMergeNode in="coloredBlur"/>
-              <feMergeNode in="SourceGraphic"/>
-            </feMerge>
-          </filter>
-        </defs>
-      </svg>
-
-      {/* Background layers */}
-      <NeuralNetwork mousePos={mousePos} />
-      <BlackHole mousePos={mousePos} />
-      <FloatingShapes />
-      <MatrixRain />
-      <Lightning />
-      <PortalVortex />
-      <AudioVisualizer />
-
-      {/* Cursor effects */}
-      <CursorTrail mousePos={mousePos} />
-
-      {/* HUD Elements */}
-      <CyberHUD />
-      <ScreenGlitch />
-
-      {/* Animated gradient overlay */}
-      <div style={{
-        position: 'absolute',
-        inset: 0,
-        background: `
-          radial-gradient(ellipse 120% 80% at 50% -30%, rgba(99, 102, 241, 0.3), transparent 60%),
-          radial-gradient(ellipse 100% 60% at 100% 100%, rgba(217, 70, 239, 0.2), transparent 50%),
-          radial-gradient(ellipse 80% 50% at 0% 50%, rgba(34, 197, 94, 0.15), transparent 40%)
-        `,
-        animation: 'bgPulse 8s ease-in-out infinite',
-        opacity: 1 - scrollY * 0.002
-      }} />
-
-      {/* Noise overlay */}
-      <div style={{
-        position: 'absolute',
-        inset: 0,
-        opacity: 0.05,
-        background: `url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-        pointerEvents: 'none',
-        mixBlendMode: 'overlay',
-        animation: 'noiseShift 0.5s steps(10) infinite'
-      }} />
-
-      {/* Scan lines */}
-      <div style={{
-        position: 'absolute',
-        inset: 0,
-        background: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px)',
-        pointerEvents: 'none',
-        opacity: 0.4
-      }} />
-
-      {/* Perspective grid floor */}
-      <div style={{
-        position: 'absolute',
-        inset: 0,
-        perspective: '800px',
-        perspectiveOrigin: '50% 20%',
-        pointerEvents: 'none'
+        overflow: 'hidden',
+        transition: 'background 0.5s ease'
       }}>
+        <ThemeToggle currentTheme={theme} setTheme={setTheme} isMobile={isMobile} />
+
+        <NeuralNetwork mousePos={mousePos} isMobile={isMobile} />
+        <FloatingShapes isMobile={isMobile} />
+        <MatrixRain isMobile={isMobile} />
+        <Lightning isMobile={isMobile} />
+        <AudioVisualizer isMobile={isMobile} />
+        {!isMobile && <CursorTrail mousePos={mousePos} />}
+        <CyberHUD isMobile={isMobile} />
+
         <div style={{
-          position: 'absolute',
-          bottom: 0,
-          left: '-100%',
-          right: '-100%',
-          height: '100%',
-          backgroundImage: `
-            linear-gradient(rgba(99, 102, 241, 0.15) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(99, 102, 241, 0.15) 1px, transparent 1px)
+          position: 'absolute', inset: 0,
+          background: `
+            radial-gradient(ellipse 90% 60% at 50% -30%, ${colors.primary}25, transparent),
+            radial-gradient(ellipse 70% 50% at 100% 100%, ${colors.secondary}18, transparent),
+            radial-gradient(ellipse 50% 40% at 0% 50%, ${colors.accent}12, transparent)
           `,
-          backgroundSize: '80px 80px',
-          transform: 'rotateX(80deg)',
-          transformOrigin: 'bottom center',
-          maskImage: 'linear-gradient(to top, black 10%, transparent 60%)',
-          WebkitMaskImage: 'linear-gradient(to top, black 10%, transparent 60%)',
-          animation: 'gridScroll 20s linear infinite'
+          opacity: 1 - scrollY * 0.002,
+          pointerEvents: 'none',
+          transition: 'background 0.5s ease'
         }} />
-      </div>
 
-      {/* Content */}
-      <div style={{
-        maxWidth: '1200px',
-        padding: '120px 48px 0',
-        textAlign: 'center',
-        position: 'relative',
-        zIndex: 10
-      }}>
-        {/* Holographic photo */}
-        <div style={{
-          opacity: loaded ? 1 : 0,
-          transform: loaded ? 'translateY(0) scale(1)' : 'translateY(100px) scale(0.8)',
-          transition: 'all 1.2s cubic-bezier(0.23, 1, 0.32, 1)'
-        }}>
-          <HolographicPhoto mousePos={mousePos} />
+        <div style={{ position: 'absolute', inset: 0, perspective: '800px', perspectiveOrigin: '50% 25%', pointerEvents: 'none' }}>
+          <div style={{
+            position: 'absolute', bottom: 0, left: '-50%', right: '-50%', height: '70%',
+            backgroundImage: `linear-gradient(${colors.primary}12 1px, transparent 1px), linear-gradient(90deg, ${colors.primary}12 1px, transparent 1px)`,
+            backgroundSize: isMobile ? '40px 40px' : '50px 50px',
+            transform: 'rotateX(75deg)', transformOrigin: 'bottom center',
+            maskImage: 'linear-gradient(to top, black 10%, transparent 50%)',
+            WebkitMaskImage: 'linear-gradient(to top, black 10%, transparent 50%)'
+          }} />
         </div>
 
-        {/* Status badge */}
+        {/* Main content - split layout on desktop */}
         <div style={{
-          display: 'inline-flex',
+          maxWidth: '1300px',
+          width: '100%',
+          padding: isMobile ? '80px 20px 60px' : '40px 80px',
+          display: 'flex',
+          flexDirection: isMobile ? 'column' : 'row',
           alignItems: 'center',
-          gap: '12px',
-          padding: '14px 32px',
-          background: 'rgba(34, 197, 94, 0.08)',
-          border: '1px solid rgba(34, 197, 94, 0.4)',
-          borderRadius: '60px',
-          marginBottom: '40px',
-          opacity: loaded ? 1 : 0,
-          transform: loaded ? 'translateY(0)' : 'translateY(30px)',
-          transition: 'all 0.8s cubic-bezier(0.23, 1, 0.32, 1) 0.3s',
+          justifyContent: 'center',
+          gap: isMobile ? '20px' : '80px',
           position: 'relative',
-          overflow: 'hidden',
-          boxShadow: '0 0 30px rgba(34, 197, 94, 0.2), inset 0 0 30px rgba(34, 197, 94, 0.05)'
+          zIndex: 10
         }}>
+          {/* Left side - Text content */}
           <div style={{
-            position: 'absolute',
-            inset: 0,
-            background: 'linear-gradient(90deg, transparent, rgba(34, 197, 94, 0.15), transparent)',
-            animation: 'badgeScan 2s linear infinite'
-          }} />
-          <span style={{
-            width: '12px',
-            height: '12px',
-            background: '#22c55e',
-            borderRadius: '50%',
-            animation: 'pulse 1.5s ease-in-out infinite',
-            boxShadow: '0 0 20px #22c55e, 0 0 40px #22c55e, 0 0 60px #22c55e'
-          }} />
-          <span style={{
-            fontSize: '12px',
-            color: '#22c55e',
-            fontWeight: '600',
-            letterSpacing: '3px',
-            textTransform: 'uppercase',
-            fontFamily: 'monospace',
-            textShadow: '0 0 10px #22c55e'
-          }}>
-            NEURAL.LINK ACTIVE // SEEKING NEW MISSIONS
-          </span>
-        </div>
-
-        {/* Main heading */}
-        <h1 style={{
-          fontSize: 'clamp(52px, 14vw, 120px)',
-          fontWeight: '900',
-          color: '#FFFFFF',
-          marginBottom: '24px',
-          lineHeight: '1.05',
-          letterSpacing: '-5px',
-          opacity: loaded ? 1 : 0,
-          transform: loaded ? 'translateY(0)' : 'translateY(50px)',
-          transition: 'all 1s cubic-bezier(0.23, 1, 0.32, 1) 0.4s'
-        }}>
-          <span style={{ color: 'rgba(255,255,255,0.4)' }}>Hi, I'm </span>
-          <span style={{
-            display: 'inline-block',
-            position: 'relative'
-          }}>
-            <GlitchText>Nathan Samson</GlitchText>
-          </span>
-        </h1>
-
-        {/* Role badges with typing effect */}
-        <div style={{
-          display: 'flex',
-          justifyContent: 'center',
-          gap: '12px',
-          marginBottom: '32px',
-          flexWrap: 'wrap',
-          opacity: loaded ? 1 : 0,
-          transform: loaded ? 'translateY(0)' : 'translateY(30px)',
-          transition: 'all 0.8s cubic-bezier(0.23, 1, 0.32, 1) 0.5s'
-        }}>
-          {['FULL-STACK ENGINEER', 'AI/ML DEVELOPER', 'SYSTEMS ARCHITECT'].map((role, i) => (
-            <span
-              key={role}
-              style={{
-                padding: '10px 24px',
-                background: 'rgba(99, 102, 241, 0.1)',
-                border: '1px solid rgba(99, 102, 241, 0.4)',
-                borderRadius: '4px',
-                fontSize: '11px',
-                fontWeight: '700',
-                letterSpacing: '2px',
-                color: '#6366f1',
-                fontFamily: 'monospace',
-                boxShadow: '0 0 20px rgba(99, 102, 241, 0.15), inset 0 0 20px rgba(99, 102, 241, 0.05)',
-                animation: `fadeSlideIn 0.5s ease forwards`,
-                animationDelay: `${0.6 + i * 0.1}s`,
-                opacity: 0
-              }}
-            >
-              {'>'} {role}
-            </span>
-          ))}
-        </div>
-
-        {/* Tagline with typing effect */}
-        <p style={{
-          fontSize: 'clamp(18px, 3vw, 24px)',
-          color: 'rgba(255,255,255,0.5)',
-          marginBottom: '60px',
-          lineHeight: '1.6',
-          maxWidth: '700px',
-          margin: '0 auto 60px',
-          fontWeight: '400',
-          opacity: loaded ? 1 : 0,
-          transform: loaded ? 'translateY(0)' : 'translateY(30px)',
-          transition: 'all 0.8s cubic-bezier(0.23, 1, 0.32, 1) 0.6s',
-          fontFamily: 'monospace'
-        }}>
-          <TypingText texts={[
-            'Building distributed systems at scale',
-            'Crafting AI-powered applications',
-            'Engineering the future of technology',
-            'Transforming ideas into reality'
-          ]} />
-        </p>
-
-        {/* Stats */}
-        <div style={{
-          display: 'flex',
-          justifyContent: 'center',
-          gap: '60px',
-          marginBottom: '60px',
-          flexWrap: 'wrap',
-          opacity: loaded ? 1 : 0,
-          transform: loaded ? 'translateY(0)' : 'translateY(30px)',
-          transition: 'all 0.8s cubic-bezier(0.23, 1, 0.32, 1) 0.7s'
-        }}>
-          {[
-            { value: '2', label: 'Publications', suffix: '', icon: '◈' },
-            { value: '3', label: 'Internships', suffix: '', icon: '◇' },
-            { value: '20', label: 'Data Points', suffix: 'M+', icon: '◆' }
-          ].map((stat, i) => (
-            <div
-              key={i}
-              style={{
-                textAlign: 'center',
-                position: 'relative',
-                padding: '28px 36px',
-                background: 'rgba(99, 102, 241, 0.05)',
-                border: '1px solid rgba(99, 102, 241, 0.2)',
-                borderRadius: '12px',
-                backdropFilter: 'blur(10px)',
-                boxShadow: '0 0 30px rgba(99, 102, 241, 0.1), inset 0 0 30px rgba(99, 102, 241, 0.03)'
-              }}
-            >
-              {/* Animated corner accents */}
-              <div style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: 20,
-                height: 20,
-                borderTop: '2px solid #6366f1',
-                borderLeft: '2px solid #6366f1',
-                animation: 'cornerPulse 2s ease-in-out infinite'
-              }} />
-              <div style={{
-                position: 'absolute',
-                bottom: 0,
-                right: 0,
-                width: 20,
-                height: 20,
-                borderBottom: '2px solid #d946ef',
-                borderRight: '2px solid #d946ef',
-                animation: 'cornerPulse 2s ease-in-out infinite 1s'
-              }} />
-
-              <div style={{
-                fontSize: '56px',
-                fontWeight: '900',
-                background: 'linear-gradient(135deg, #6366f1, #8b5cf6, #d946ef)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-                lineHeight: 1,
-                fontFamily: 'monospace',
-                textShadow: '0 0 40px rgba(99, 102, 241, 0.5)'
-              }}>
-                <AnimatedCounter end={stat.value} suffix={stat.suffix} />
-              </div>
-              <div style={{
-                fontSize: '11px',
-                color: 'rgba(255,255,255,0.4)',
-                textTransform: 'uppercase',
-                letterSpacing: '3px',
-                marginTop: '14px',
-                fontWeight: '700',
-                fontFamily: 'monospace'
-              }}>
-                {stat.icon} {stat.label}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* CTAs */}
-        <div style={{
-          display: 'flex',
-          gap: '20px',
-          justifyContent: 'center',
-          flexWrap: 'wrap',
-          marginBottom: '100px',
-          opacity: loaded ? 1 : 0,
-          transform: loaded ? 'translateY(0)' : 'translateY(30px)',
-          transition: 'all 0.8s cubic-bezier(0.23, 1, 0.32, 1) 0.8s'
-        }}>
-          <MagneticButton
-            href="/images/res2.pdf"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '12px',
-              padding: '20px 40px',
-              background: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #d946ef 100%)',
-              backgroundSize: '200% 200%',
-              color: '#FFFFFF',
-              textDecoration: 'none',
-              fontSize: '14px',
-              fontWeight: '700',
-              borderRadius: '12px',
-              cursor: 'pointer',
-              boxShadow: '0 0 40px rgba(99, 102, 241, 0.5), 0 0 80px rgba(99, 102, 241, 0.3), inset 0 1px 0 rgba(255,255,255,0.2)',
-              fontFamily: 'monospace',
-              letterSpacing: '2px',
-              textTransform: 'uppercase',
-              animation: 'gradientShift 3s ease infinite'
-            }}
-          >
-            <span style={{ opacity: 0.7 }}>{'>'}</span> View Resume
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-              <path d="M7 17L17 7M17 7H7M17 7V17"/>
-            </svg>
-          </MagneticButton>
-          <MagneticButton
-            href="https://github.com/Bostesa"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '12px',
-              padding: '20px 40px',
-              background: 'rgba(99, 102, 241, 0.08)',
-              color: '#FFFFFF',
-              textDecoration: 'none',
-              fontSize: '14px',
-              fontWeight: '600',
-              borderRadius: '12px',
-              border: '1px solid rgba(99, 102, 241, 0.4)',
-              cursor: 'pointer',
-              backdropFilter: 'blur(20px)',
-              fontFamily: 'monospace',
-              letterSpacing: '2px',
-              textTransform: 'uppercase',
-              boxShadow: '0 0 30px rgba(99, 102, 241, 0.2), inset 0 0 30px rgba(99, 102, 241, 0.05)'
-            }}
-          >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
-            </svg>
-            GitHub
-          </MagneticButton>
-          <MagneticButton
-            href="https://www.linkedin.com/in/nathan-samson-bostesa/"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '12px',
-              padding: '20px 40px',
-              background: 'rgba(99, 102, 241, 0.08)',
-              color: '#FFFFFF',
-              textDecoration: 'none',
-              fontSize: '14px',
-              fontWeight: '600',
-              borderRadius: '12px',
-              border: '1px solid rgba(99, 102, 241, 0.4)',
-              cursor: 'pointer',
-              backdropFilter: 'blur(20px)',
-              fontFamily: 'monospace',
-              letterSpacing: '2px',
-              textTransform: 'uppercase',
-              boxShadow: '0 0 30px rgba(99, 102, 241, 0.2), inset 0 0 30px rgba(99, 102, 241, 0.05)'
-            }}
-          >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-            </svg>
-            LinkedIn
-          </MagneticButton>
-        </div>
-
-        {/* Scroll indicator */}
-        <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: '16px',
-          opacity: Math.max(0, 1 - scrollY * 0.01),
-          transform: loaded ? 'translateY(0)' : 'translateY(30px)',
-          transition: 'transform 0.8s cubic-bezier(0.23, 1, 0.32, 1) 0.9s'
-        }}>
-          <span style={{
-            fontSize: '10px',
-            color: 'rgba(255,255,255,0.25)',
-            letterSpacing: '4px',
-            textTransform: 'uppercase',
-            fontWeight: '700',
-            fontFamily: 'monospace',
-            animation: 'scrollTextPulse 2s ease-in-out infinite'
-          }}>
-            {'<< SCROLL TO EXPLORE >>'}
-          </span>
-          <div style={{
-            width: '28px',
-            height: '48px',
-            border: '2px solid rgba(99, 102, 241, 0.4)',
-            borderRadius: '14px',
-            position: 'relative',
-            overflow: 'hidden',
-            boxShadow: '0 0 20px rgba(99, 102, 241, 0.2), inset 0 0 20px rgba(99, 102, 241, 0.1)'
+            flex: isMobile ? 'none' : '1',
+            textAlign: isMobile ? 'center' : 'left',
+            maxWidth: isMobile ? '100%' : '600px'
           }}>
             <div style={{
-              position: 'absolute',
-              left: '50%',
-              top: '8px',
-              width: '6px',
-              height: '10px',
-              background: 'linear-gradient(to bottom, #6366f1, #d946ef)',
-              borderRadius: '3px',
-              transform: 'translateX(-50%)',
-              animation: 'scrollBounce 1.5s ease-in-out infinite',
-              boxShadow: '0 0 15px #6366f1, 0 0 30px #6366f1'
-            }} />
-          </div>
-        </div>
-      </div>
+              display: 'inline-flex', alignItems: 'center', gap: isMobile ? '8px' : '10px',
+              padding: isMobile ? '10px 20px' : '12px 28px',
+              background: `rgba(0,0,0,0.4)`, border: `1px solid ${colors.success}40`,
+              borderRadius: '50px', marginBottom: isMobile ? '28px' : '36px',
+              opacity: loaded ? 1 : 0, transform: loaded ? 'translateY(0)' : 'translateY(20px)',
+              transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s',
+              backdropFilter: 'blur(10px)'
+            }}>
+              <span style={{ width: 8, height: 8, background: colors.success, borderRadius: '50%', boxShadow: `0 0 15px ${colors.success}`, animation: 'pulse 2s ease-in-out infinite' }} />
+              <span style={{ fontSize: isMobile ? '10px' : '12px', color: colors.success, fontWeight: '600', letterSpacing: '1.5px', fontFamily: 'monospace', textShadow: '0 2px 10px rgba(0,0,0,0.5)' }}>
+                {isMobile ? 'AVAILABLE' : 'AVAILABLE FOR OPPORTUNITIES'}
+              </span>
+            </div>
 
-      {/* CSS Animations */}
-      <style>{`
-        @keyframes matrixFall {
-          0% { transform: translateY(-100%); }
-          100% { transform: translateY(100vh); }
-        }
-        @keyframes orbitSpin {
-          from { transform: rotateX(75deg) rotateZ(0deg); }
-          to { transform: rotateX(75deg) rotateZ(360deg); }
-        }
-        @keyframes energyPulse {
-          0% { transform: scale(1); opacity: 0.8; }
-          100% { transform: scale(2.5); opacity: 0; }
-        }
-        @keyframes holographicShimmer {
-          0% { transform: translateX(-100%); }
-          100% { transform: translateX(100%); }
-        }
-        @keyframes glitchSkew {
-          0% { transform: skew(0deg) translateX(0); }
-          20% { transform: skew(-3deg) translateX(-2px); }
-          40% { transform: skew(3deg) translateX(2px); }
-          60% { transform: skew(0deg) translateX(0); }
-          80% { transform: skew(2deg) translateX(1px); }
-          100% { transform: skew(-2deg) translateX(-1px); }
-        }
-        @keyframes pulse {
-          0%, 100% { opacity: 1; transform: scale(1); }
-          50% { opacity: 0.5; transform: scale(1.2); }
-        }
-        @keyframes badgeScan {
-          0% { transform: translateX(-100%); }
-          100% { transform: translateX(100%); }
-        }
-        @keyframes scrollBounce {
-          0%, 100% { top: 8px; opacity: 1; }
-          50% { top: 24px; opacity: 0.3; }
-        }
-        @keyframes float3d {
-          0%, 100% { transform: translateY(0) translateZ(0); }
-          50% { transform: translateY(-30px) translateZ(20px); }
-        }
-        @keyframes spin3d {
-          from { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
-          to { transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg); }
-        }
-        @keyframes portalSpin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        @keyframes portalPulse {
-          0%, 100% { opacity: 0.8; transform: translate(-50%, -50%) scale(1); }
-          50% { opacity: 1; transform: translate(-50%, -50%) scale(1.5); }
-        }
-        @keyframes bgPulse {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.7; }
-        }
-        @keyframes noiseShift {
-          0% { transform: translate(0, 0); }
-          100% { transform: translate(-10px, -10px); }
-        }
-        @keyframes gridScroll {
-          0% { background-position: 0 0; }
-          100% { background-position: 80px 80px; }
-        }
-        @keyframes fadeSlideIn {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes blink {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0; }
-        }
-        @keyframes rippleExpand {
-          from { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-          to { transform: translate(-50%, -50%) scale(50); opacity: 0; }
-        }
-        @keyframes buttonShine {
-          from { transform: translateX(-100%); }
-          to { transform: translateX(100%); }
-        }
-        @keyframes cornerPulse {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.3; }
-        }
-        @keyframes scrollTextPulse {
-          0%, 100% { opacity: 0.25; }
-          50% { opacity: 0.5; }
-        }
-        @keyframes dnaFloat {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-10px); }
-        }
-      `}</style>
-    </section>
+            <h1 style={{
+              fontSize: isMobile ? 'clamp(32px, 10vw, 48px)' : 'clamp(44px, 8vw, 72px)',
+              fontWeight: '800',
+              color: '#ffffff',
+              marginBottom: isMobile ? '16px' : '20px',
+              lineHeight: '1.1',
+              letterSpacing: isMobile ? '-1.5px' : '-2px',
+              opacity: loaded ? 1 : 0, transform: loaded ? 'translateY(0)' : 'translateY(30px)',
+              transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s',
+              textShadow: '0 4px 30px rgba(0,0,0,0.8)'
+            }}>
+              <span style={{ color: 'rgba(255,255,255,0.6)', fontWeight: '400' }}>Hi, I'm </span>
+              <GlitchText isMobile={isMobile}>Nathan Samson</GlitchText>
+            </h1>
+
+            <div style={{
+              display: 'flex', justifyContent: isMobile ? 'center' : 'flex-start', gap: isMobile ? '6px' : '10px', marginBottom: isMobile ? '24px' : '28px', flexWrap: 'wrap',
+              opacity: loaded ? 1 : 0, transform: loaded ? 'translateY(0)' : 'translateY(20px)',
+              transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s'
+            }}>
+              {['Full-Stack Engineer', 'AI/ML Developer', 'Systems Architect'].map((role, i) => (
+                <span key={role} style={{
+                  padding: isMobile ? '6px 12px' : '8px 18px',
+                  background: `rgba(0,0,0,0.4)`,
+                  border: `1px solid ${colors.primary}40`,
+                  borderRadius: '6px',
+                  fontSize: isMobile ? '10px' : '12px',
+                  fontWeight: '600',
+                  letterSpacing: '0.5px',
+                  color: [colors.primary, colors.secondary, colors.warm][i],
+                  textShadow: '0 2px 10px rgba(0,0,0,0.5)'
+                }}>{role}</span>
+              ))}
+            </div>
+
+            <p style={{
+              fontSize: isMobile ? '14px' : 'clamp(16px, 2vw, 18px)',
+              color: 'rgba(255,255,255,0.7)',
+              marginBottom: isMobile ? '36px' : '40px',
+              lineHeight: '1.6',
+              maxWidth: '500px',
+              margin: isMobile ? '0 auto 36px' : '0 0 40px 0',
+              padding: isMobile ? '0 10px' : 0,
+              opacity: loaded ? 1 : 0, transform: loaded ? 'translateY(0)' : 'translateY(20px)',
+              transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.4s',
+              textShadow: '0 2px 10px rgba(0,0,0,0.5)'
+            }}>
+              <TypingText texts={['Building distributed systems that scale', 'Crafting AI-powered applications', 'Engineering elegant solutions', 'Turning ideas into reality']} />
+            </p>
+
+            <div style={{
+              display: 'flex',
+              justifyContent: isMobile ? 'center' : 'flex-start',
+              gap: isMobile ? '30px' : '40px',
+              marginBottom: isMobile ? '40px' : '40px',
+              flexWrap: 'wrap',
+              opacity: loaded ? 1 : 0, transform: loaded ? 'translateY(0)' : 'translateY(20px)',
+              transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s'
+            }}>
+              {[{ value: '2', label: 'Publications', suffix: '' }, { value: '3', label: 'Internships', suffix: '' }, { value: '20', label: 'Data Points', suffix: 'M+' }].map((stat, i) => (
+                <div key={i} style={{ textAlign: isMobile ? 'center' : 'left' }}>
+                  <div style={{
+                    fontSize: isMobile ? '32px' : '36px',
+                    fontWeight: '700',
+                    color: '#ffffff',
+                    textShadow: `0 0 30px ${colors.primary}, 0 4px 15px rgba(0,0,0,0.6)`,
+                    lineHeight: 1, fontFamily: 'monospace'
+                  }}><AnimatedCounter end={stat.value} suffix={stat.suffix} /></div>
+                  <div style={{
+                    fontSize: isMobile ? '9px' : '10px',
+                    color: 'rgba(255,255,255,0.6)',
+                    marginTop: '8px',
+                    letterSpacing: '1.5px',
+                    textTransform: 'uppercase',
+                    textShadow: '0 2px 10px rgba(0,0,0,0.5)'
+                  }}>{stat.label}</div>
+                </div>
+              ))}
+            </div>
+
+            <div style={{
+              display: 'flex',
+              gap: isMobile ? '10px' : '14px',
+              justifyContent: isMobile ? 'center' : 'flex-start',
+              flexWrap: 'wrap',
+              opacity: loaded ? 1 : 0, transform: loaded ? 'translateY(0)' : 'translateY(20px)',
+              transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.6s'
+            }}>
+              <MagneticButton href="/images/res2.pdf" primary isMobile={isMobile}>
+                View Resume
+                <svg width={isMobile ? 14 : 16} height={isMobile ? 14 : 16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+              </MagneticButton>
+              <MagneticButton href="https://github.com/Bostesa" isMobile={isMobile}>
+                <svg width={isMobile ? 16 : 18} height={isMobile ? 16 : 18} viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                GitHub
+              </MagneticButton>
+              <MagneticButton href="https://www.linkedin.com/in/nathan-samson-bostesa/" isMobile={isMobile}>
+                <svg width={isMobile ? 16 : 18} height={isMobile ? 16 : 18} viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                LinkedIn
+              </MagneticButton>
+            </div>
+          </div>
+
+          {/* Right side - Photo (on desktop) */}
+          {!isMobile && (
+            <div style={{
+              flex: '0 0 auto',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginRight: '40px',
+              opacity: loaded ? 1 : 0,
+              transform: loaded ? 'translateX(0)' : 'translateX(50px)',
+              transition: 'all 1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s'
+            }}>
+              <HolographicPhoto mousePos={mousePos} isMobile={isMobile} />
+            </div>
+          )}
+
+          {/* Photo on mobile - show at top */}
+          {isMobile && (
+            <div style={{
+              order: -1,
+              marginBottom: 20,
+              opacity: loaded ? 1 : 0,
+              transform: loaded ? 'translateY(0)' : 'translateY(30px)',
+              transition: 'all 1s cubic-bezier(0.16, 1, 0.3, 1)'
+            }}>
+              <HolographicPhoto mousePos={mousePos} isMobile={isMobile} />
+            </div>
+          )}
+        </div>
+
+        {/* Scroll indicator - desktop only */}
+        {!isMobile && (
+          <div style={{
+            position: 'absolute',
+            bottom: 40,
+            left: '50%',
+            transform: 'translateX(-50%)',
+            display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px',
+            opacity: Math.max(0, 0.6 - scrollY * 0.006),
+            zIndex: 10
+          }}>
+            <span style={{ fontSize: '10px', color: 'rgba(255,255,255,0.4)', letterSpacing: '3px', textTransform: 'uppercase', fontFamily: 'monospace' }}>Scroll to explore</span>
+            <div style={{ width: 24, height: 40, border: `2px solid ${colors.primary}35`, borderRadius: 12, position: 'relative' }}>
+              <div style={{ position: 'absolute', left: '50%', top: 8, width: 4, height: 8, background: colors.primary, borderRadius: 2, transform: 'translateX(-50%)', animation: 'scrollBounce 2s ease-in-out infinite' }} />
+            </div>
+          </div>
+        )}
+
+        <style>{`
+          @keyframes matrixFall { 0% { transform: translateY(-100%); } 100% { transform: translateY(100vh); } }
+          @keyframes orbitSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+          @keyframes holographicShine { 0%, 100% { opacity: 0; transform: translateX(-100%); } 50% { opacity: 1; transform: translateX(100%); } }
+          @keyframes gradientShift { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+          @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.15); } }
+          @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+          @keyframes scrollBounce { 0%, 100% { top: 8px; opacity: 1; } 50% { top: 18px; opacity: 0.3; } }
+          @keyframes float3d { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+          @keyframes spin3d { from { transform: rotateX(0deg) rotateY(0deg); } to { transform: rotateX(360deg) rotateY(360deg); } }
+          @keyframes energyPulse { 0% { transform: scale(1); opacity: 0.6; } 100% { transform: scale(2); opacity: 0; } }
+          @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+          * { -webkit-tap-highlight-color: transparent; }
+        `}</style>
+      </section>
+    </ThemeContext.Provider>
   );
 }
