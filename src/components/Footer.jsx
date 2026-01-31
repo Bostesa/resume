@@ -80,7 +80,7 @@ export default function Footer() {
             Always open to discussing new projects, opportunities, or collaborations
           </p>
           <a
-            href="mailto:natestesa@gmail.com"
+            href="mailto:nsamson4@umbc.edu"
             style={{
               display: 'inline-flex',
               alignItems: 'center',
@@ -147,7 +147,7 @@ export default function Footer() {
             {[
               { label: 'LinkedIn', url: 'https://www.linkedin.com/in/nathan-samson-bostesa/' },
               { label: 'GitHub', url: 'https://github.com/Bostesa' },
-              { label: 'Email', url: 'mailto:natestesa@gmail.com' }
+              { label: 'Email', url: 'mailto:nsamson4@umbc.edu' }
             ].map((link) => (
               <a
                 key={link.label}

@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
 
 // ==================== COLOR THEMES ====================
 export const themes = {
@@ -170,8 +170,17 @@ export const useTheme = () => {
 };
 
 export const ThemeProvider = ({ children }) => {
-  const [currentTheme, setCurrentTheme] = useState('cyber');
+  // Load saved theme from localStorage or default to 'cyber'
+  const [currentTheme, setCurrentTheme] = useState(() => {
+    const saved = localStorage.getItem('theme');
+    return saved && themes[saved] ? saved : 'cyber';
+  });
   const colors = themes[currentTheme];
+
+  // Save theme to localStorage when it changes
+  useEffect(() => {
+    localStorage.setItem('theme', currentTheme);
+  }, [currentTheme]);
 
   return (
     <ThemeContext.Provider value={{ colors, currentTheme, setTheme: setCurrentTheme, themes }}>
